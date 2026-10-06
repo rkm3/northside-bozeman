@@ -1,0 +1,56 @@
+---
+const path = Astro.url.pathname;
+
+const items = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About' },
+  { href: '/events', label: 'Events' },
+  { href: '/map', label: 'Map' },
+  { href: '/contact', label: 'Contact' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/') return path === '/';
+  return path === href || path.startsWith(`${href}/`);
+}
+---
+
+<header class="border-b border-line bg-cream">
+  <div
+    class="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-end sm:justify-between"
+  >
+    <a href="/" class="block">
+      <span class="font-serif text-2xl font-medium tracking-tight text-ink">Northside</span>
+      <span class="mt-0.5 block text-xs uppercase tracking-[0.18em] text-muted">
+        Bozeman · Historic Brewery District
+      </span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="flex flex-wrap gap-x-5 gap-y-2">
+        {
+          items.map((item) => {
+            const active = isActive(item.href);
+            return (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={active ? 'page' : undefined}
+                  class:list={[
+                    'text-sm underline-offset-4',
+                    active
+                      ? 'font-semibold text-brick-deep underline'
+                      : 'text-ink hover:text-brick-deep hover:underline',
+                  ]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+  </div>
+  <div class="h-1 bg-brick"></div>
+  <div class="h-px bg-gold"></div>
+</header>

@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+
+const email = 'hello@northsidebozeman.com';
+---
+
+<BaseLayout
+  title="Contact"
+  description="Write to the Northside Neighborhood association in Bozeman’s Historic Brewery District."
+>
+  <PageHeader
+    kicker="Say hello"
+    title="Contact"
+    lede="The Northside Neighborhood association is the neighbor-to-neighbor group for the Historic Brewery District."
+  />
+
+  <div class="mx-auto max-w-5xl px-4 py-8">
+    <div class="max-w-xl border border-line bg-cream p-6 sm:p-8">
+      <p class="leading-relaxed">
+        This draft does not collect form submissions. Write to the association directly.
+      </p>
+      <p class="mt-6 text-xs uppercase tracking-[0.16em] text-muted">Email</p>
+      <a
+        class="mt-2 inline-flex font-serif text-2xl text-brick-deep underline-offset-4 hover:underline"
+        href={`mailto:${email}`}
+      >
+        {email}
+      </a>
+      <p class="mt-3 text-sm text-muted">
+        Placeholder address for this draft. Swap it for the association’s real inbox before launch.
+      </p>
+      <p class="mt-6 text-sm leading-relaxed text-muted">
+        Historic Brewery District<br />
+        Northeast Bozeman, Montana
+      </p>
+    </div>
+  </div>
+</BaseLayout>

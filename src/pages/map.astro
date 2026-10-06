@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import NeighborhoodMap from '../components/NeighborhoodMap.astro';
+---
+
+<BaseLayout
+  title="Map"
+  description="Approximate map of Bozeman’s Northside / Historic Brewery District, focused on the N. Wallace Avenue 700–800 blocks."
+>
+  <PageHeader
+    kicker="The block"
+    title="Neighborhood map"
+    lede="A first look at the Northside, centered on the Historic Brewery District and the 700–800 blocks of N. Wallace Avenue."
+  />
+
+  <div class="mx-auto max-w-5xl px-4 py-8">
+    <NeighborhoodMap />
+  </div>
+</BaseLayout>

@@ -1,0 +1,44 @@
+---
+const links = [
+  { href: '/about', label: 'About' },
+  { href: '/events', label: 'Events' },
+  { href: '/map', label: 'Map' },
+  { href: '/contact', label: 'Contact' },
+];
+---
+
+<footer class="mt-20 bg-hop text-cream">
+  <div class="mx-auto grid max-w-5xl gap-10 px-4 py-12 sm:grid-cols-3">
+    <div>
+      <p class="font-serif text-2xl">Northside</p>
+      <p class="mt-3 max-w-xs text-sm leading-relaxed text-cream/80">
+        From Lager to Legacy in Bozeman, Montana. A neighborhood association for the Historic
+        Brewery District.
+      </p>
+    </div>
+    <div>
+      <p class="text-xs uppercase tracking-[0.18em] text-cream/70">Visit</p>
+      <p class="mt-3 text-sm leading-relaxed">
+        Historic Brewery District<br />
+        Northeast Bozeman, Montana
+      </p>
+    </div>
+    <nav aria-label="Footer">
+      <p class="text-xs uppercase tracking-[0.18em] text-cream/70">On this site</p>
+      <ul class="mt-3 space-y-2 text-sm">
+        {
+          links.map((link) => (
+            <li>
+              <a class="underline-offset-4 hover:underline" href={link.href}>
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+  <p class="border-t border-white/15 px-4 py-4 text-center text-xs leading-relaxed text-cream/70">
+    The neighborhood boundary on the map is a placeholder and still to be confirmed.
+  </p>
+</footer>

@@ -1,0 +1,50 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { formatEventDate, isPastEvent } from '../../utils/format-date';
+
+export async function getStaticPaths() {
+  const events = await getCollection('events');
+  return events.map((event) => ({
+    params: { id: event.id },
+    props: { event },
+  }));
+}
+
+const { event } = Astro.props;
+const { Content } = await render(event);
+const past = isPastEvent(event.data.date);
+---
+
+<BaseLayout title={event.data.title} description={event.data.summary}>
+  <PageHeader
+    kicker={past ? 'Past event' : 'Neighborhood event'}
+    title={event.data.title}
+    lede={event.data.summary}
+  />
+
+  <article class="mx-auto max-w-5xl px-4 py-6">
+    <dl class="grid max-w-2xl gap-4 border border-line bg-cream p-5 sm:grid-cols-2">
+      <div>
+        <dt class="text-xs uppercase tracking-[0.16em] text-muted">When</dt>
+        <dd class="mt-1">{formatEventDate(event.data.date)}</dd>
+        {event.data.time && <dd class="text-sm text-muted">{event.data.time}</dd>}
+      </div>
+      <div>
+        <dt class="text-xs uppercase tracking-[0.16em] text-muted">Where</dt>
+        <dd class="mt-1">{event.data.location}</dd>
+      </div>
+    </dl>
+
+    <div class="prose-local mt-8 max-w-2xl text-lg leading-relaxed">
+      <Content />
+    </div>
+
+    <p class="mt-8">
+      <a class="text-sm font-semibold text-brick-deep underline-offset-4 hover:underline" href="/events">
+        All events
+      </a>
+    </p>
+  </article>
+</BaseLayout>

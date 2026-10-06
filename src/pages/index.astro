@@ -1,0 +1,77 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DistrictMark from '../components/DistrictMark.astro';
+import EventCard from '../components/EventCard.astro';
+
+const district = await getEntry('pages', 'district');
+const districtContent = district ? await render(district) : null;
+const DistrictBody = districtContent?.Content;
+
+const about = (await getCollection('pages', ({ data }) => data.section === 'about')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const events = (await getCollection('events')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+const featured = events.find((event) => event.data.featured) ?? events[0];
+---
+
+<BaseLayout
+  title="Northside Neighborhood"
+  description="From Lager to Legacy in Bozeman MT. The Northside Neighborhood association for the Historic Brewery District."
+>
+  <section class="border-b border-line">
+    <div class="mx-auto grid max-w-5xl items-center gap-10 px-4 py-12 md:grid-cols-[minmax(0,1.3fr)_minmax(0,0.9fr)] md:py-16">
+      <div>
+        <div class="flex items-end justify-between gap-4">
+          <p class="text-xs uppercase tracking-[0.2em] text-brick-deep">Bozeman, Montana</p>
+          <DistrictMark class="h-16 w-24 shrink-0 sm:h-20 sm:w-28" />
+        </div>
+        <h1 class="mt-3 font-serif text-[2.75rem] font-medium uppercase leading-[0.92] tracking-wide sm:text-6xl">
+          Northside<br />Neighborhood
+        </h1>
+        <p class="mt-5 font-serif text-2xl italic leading-snug text-hop sm:text-3xl">
+          From Lager to Legacy in Bozeman MT
+        </p>
+        {
+          DistrictBody && (
+            <div class="prose-local mt-6 max-w-xl text-lg leading-relaxed">
+              <DistrictBody />
+            </div>
+          )
+        }
+      </div>
+      <div>{featured && <EventCard event={featured} featured />}</div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-4 py-14" aria-labelledby="who-what-why">
+    <h2 id="who-what-why" class="font-serif text-3xl font-medium tracking-tight">
+      Who, what, and why
+    </h2>
+    <p class="mt-3 max-w-2xl text-muted">
+      Artists and makers, the work of the block, and a reason to keep it local.
+    </p>
+    <ul class="mt-8 grid gap-6 md:grid-cols-3">
+      {
+        about.map((section, index) => (
+          <li class="border-t-2 border-brick bg-cream p-5">
+            <p class="text-xs uppercase tracking-[0.16em] text-brick-deep">
+              {String(index + 1).padStart(2, '0')}
+            </p>
+            <h3 class="mt-2 font-serif text-2xl font-medium">{section.data.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed">{section.data.summary}</p>
+            <a
+              class="mt-4 inline-flex text-sm font-semibold text-brick-deep underline-offset-4 hover:underline"
+              href={`/about#${section.id}`}
+            >
+              Read {section.data.title}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

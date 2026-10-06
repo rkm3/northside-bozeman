@@ -1,0 +1,68 @@
+@import "@fontsource/fraunces/latin-500.css";
+@import "@fontsource/fraunces/latin-600.css";
+@import "@fontsource/fraunces/latin-700.css";
+@import "@fontsource/source-sans-3/latin-400.css";
+@import "@fontsource/source-sans-3/latin-600.css";
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+  --color-paper: #f3ecdf;
+  --color-ink: #221c17;
+  --color-muted: #5c5146;
+  --color-brick: #8d3b28;
+  --color-brick-deep: #6a2b1d;
+  --color-hop: #24382e;
+  --color-cream: #fbf7f0;
+  --color-line: #ddd2c2;
+  --color-gold: #b08958;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  ::selection {
+    background: #e7c7b8;
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brick);
+    outline-offset: 3px;
+  }
+}
+
+.prose-local p + p {
+  margin-top: 0.9rem;
+}
+
+.prose-local a {
+  color: var(--color-brick-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: 0.75rem;
+  z-index: 50;
+  transform: translateY(-150%);
+  background: var(--color-cream);
+  color: var(--color-ink);
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--color-line);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
