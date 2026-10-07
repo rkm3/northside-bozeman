@@ -4,6 +4,8 @@ categories:
   - retail
 address: 724 N Wallace Ave Suite 3, Bozeman, MT 59715
 website: https://www.gangbusterspottery.com/
+instagram_handle: gangbusterspottery
+pinterest_handle: gangbusterspottery
 lat: 45.687424
 lng: -111.028207
 ---

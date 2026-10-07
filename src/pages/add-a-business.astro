@@ -1,0 +1,378 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import {
+  PLACE_CATEGORIES,
+  placeCategoryLabels,
+  placeCategoryMarker,
+} from '../data/place-categories';
+
+const fields: {
+  name: string;
+  required: boolean;
+  format: string;
+  example: string;
+  shows: string;
+}[] = [
+  {
+    name: 'name',
+    required: true,
+    format: 'The business name as they write it, including capitals and symbols.',
+    example: 'Gangbusters Pottery',
+    shows: 'Card title, page title, map pin label',
+  },
+  {
+    name: 'categories',
+    required: true,
+    format: 'One or more categories from the list below. The first one sets the map pin color.',
+    example: 'retail',
+    shows: 'Card kicker, map filters, pin color',
+  },
+  {
+    name: 'address',
+    required: true,
+    format: 'Full street address with suite or unit, city, state, and ZIP.',
+    example: '724 N Wallace Ave Suite 3, Bozeman, MT 59715',
+    shows: 'Card, place page, map popup, Google Maps link',
+  },
+  {
+    name: 'lat / lng',
+    required: true,
+    format: 'Decimal coordinates for the front door, to six places. In Google Maps, right-click the spot and click the numbers to copy them.',
+    example: '45.687424 / -111.028207',
+    shows: 'Map pin position',
+  },
+  {
+    name: 'website',
+    required: false,
+    format: 'Full URL starting with https://. Use the business’s own site, not a social profile.',
+    example: 'https://www.gangbusterspottery.com/',
+    shows: 'Website pill, place page, map popup',
+  },
+  {
+    name: 'phone',
+    required: false,
+    format: 'The public business number, written the way you’d say it.',
+    example: '(406) 548-1438',
+    shows: 'Place page, map popup (tap to call)',
+  },
+  {
+    name: 'instagram_handle',
+    required: false,
+    format: 'The handle only: no @, no link.',
+    example: 'gangbusterspottery',
+    shows: 'Instagram pill',
+  },
+  {
+    name: 'pinterest_handle',
+    required: false,
+    format: 'The handle only: no @, no link.',
+    example: 'gangbusterspottery',
+    shows: 'Pinterest pill',
+  },
+];
+
+const imageSpecs = [
+  {
+    title: 'Photo',
+    format: 'JPG or WebP',
+    size: 'At least 1200 × 800px, landscape',
+    note: 'Cropped to 3:2 on cards and the place page, so keep the subject near the center.',
+  },
+  {
+    title: 'Logo',
+    format: 'Square PNG',
+    size: 'At least 640 × 640px',
+    note: 'Shown whole, never cropped. Use a transparent or white background.',
+  },
+];
+
+const imageDos = [
+  'Use the storefront, the work, or the people. Real photos of the district beat stock photos.',
+  'Get the owner’s permission, and note who took the photo if they want credit.',
+  'Name the file after the listing file: gangbusters-pottery.md pairs with gangbusters-pottery.jpg.',
+];
+const imageDonts = [
+  'Don’t use screenshots of a website or social post.',
+  'Don’t add text, borders, or filters on top of the photo.',
+  'Don’t use a wide logo as a PNG. It will be cropped. Save it as a JPG photo instead, or ask for a square version.',
+];
+
+const template = `---
+name: Gangbusters Pottery
+categories:
+  - retail
+address: 724 N Wallace Ave Suite 3, Bozeman, MT 59715
+website: https://www.gangbusterspottery.com/
+phone: (406) 555-0123
+instagram_handle: gangbusterspottery
+pinterest_handle: gangbusterspottery
+lat: 45.687424
+lng: -111.028207
+---
+Handmade porcelain by Ryan Mitchell. Since 2012, functional pieces for everyday use.`;
+
+const checklist = [
+  'Name, address, and at least one category',
+  'Coordinates for the front door, checked on the map',
+  'Website, phone, and social handles, if they have them',
+  'A photo or square logo, with permission to use it',
+  'One to three sentences about what they do',
+  'The owner has seen the listing and is happy with it',
+];
+
+const sectionNav = [
+  { href: '#fields', label: 'Fields' },
+  { href: '#categories', label: 'Categories' },
+  { href: '#images', label: 'Images' },
+  { href: '#description', label: 'Description' },
+  { href: '#template', label: 'Template' },
+  { href: '#checklist', label: 'Checklist' },
+];
+---
+
+<BaseLayout
+  title="Add a business"
+  description="The details and images we need to list a business on the Northside Bozeman map."
+>
+  <PageHeader
+    kicker="Listings"
+    title="Adding a business"
+    lede="Everything we need to put a Northside business on the map: the details, the image, and a few words about them."
+  />
+
+  <nav aria-label="On this page" class="mx-auto max-w-5xl px-4 pt-6">
+    <ul class="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+      {
+        sectionNav.map((item) => (
+          <li>
+            <a class="text-rust underline-offset-4 hover:underline" href={item.href}>
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <section id="fields" class="mx-auto max-w-5xl scroll-mt-6 px-4 pt-14" aria-labelledby="fields-title">
+    <p class="text-xs uppercase tracking-[0.16em] text-rust">01</p>
+    <h2 id="fields-title" class="mt-1 font-serif text-3xl font-medium tracking-tight">Fields</h2>
+    <p class="mt-3 max-w-2xl text-muted">
+      Each business is one file in <code class="bg-surface px-1 py-0.5 text-ink">src/content/places/</code>.
+      The filename becomes the page address, so <code class="bg-surface px-1 py-0.5 text-ink">gangbusters-pottery.md</code>
+      lives at <code class="bg-surface px-1 py-0.5 text-ink">/places/gangbusters-pottery</code>. Use lowercase
+      words joined by hyphens.
+    </p>
+
+    <ul class="mt-6 divide-y divide-line border border-line bg-surface">
+      {
+        fields.map((field) => (
+          <li class="grid gap-3 p-5 md:grid-cols-[11rem_1fr_15rem] md:gap-6">
+            <div class="flex items-center gap-3 md:block">
+              <code class="font-mono font-semibold">{field.name}</code>
+              <span
+                class:list={[
+                  'block w-fit px-2 py-0.5 text-xs font-semibold md:mt-1',
+                  field.required ? 'bg-rust text-surface' : 'border border-line text-muted',
+                ]}
+              >
+                {field.required ? 'Required' : 'Optional'}
+              </span>
+            </div>
+            <div class="text-sm leading-relaxed">
+              <p>{field.format}</p>
+              <p class="mt-2 text-muted">
+                <span class="text-xs uppercase tracking-[0.14em]">Shows on</span> · {field.shows}
+              </p>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-[0.14em] text-muted">Example</p>
+              <p class="mt-1 bg-paper px-2 py-1 font-mono text-xs leading-relaxed [overflow-wrap:anywhere]">
+                {field.example}
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section id="categories" class="mx-auto max-w-5xl scroll-mt-6 px-4 pt-16" aria-labelledby="categories-title">
+    <p class="text-xs uppercase tracking-[0.16em] text-rust">02</p>
+    <h2 id="categories-title" class="mt-1 font-serif text-3xl font-medium tracking-tight">Categories</h2>
+    <p class="mt-3 max-w-2xl text-muted">
+      Pick what most people come in for. Add a second category only when it’s a real part of the
+      business, like a gallery that’s also a nonprofit.
+    </p>
+
+    <ul class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        PLACE_CATEGORIES.map((category) => (
+          <li class="flex items-center gap-3 border border-line bg-surface p-4">
+            <span
+              class="inline-block h-4 w-4 shrink-0 rounded-full border-2"
+              style={{
+                backgroundColor: placeCategoryMarker[category].fill,
+                borderColor: placeCategoryMarker[category].stroke,
+              }}
+              aria-hidden="true"
+            />
+            <span>
+              <span class="block font-semibold">{placeCategoryLabels[category]}</span>
+              <code class="font-mono text-xs text-muted">{category}</code>
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section id="images" class="mx-auto max-w-5xl scroll-mt-6 px-4 pt-16" aria-labelledby="images-title">
+    <p class="text-xs uppercase tracking-[0.16em] text-rust">03</p>
+    <h2 id="images-title" class="mt-1 font-serif text-3xl font-medium tracking-tight">Images</h2>
+    <p class="mt-3 max-w-2xl text-muted">
+      One image per business, saved in <code class="bg-surface px-1 py-0.5 text-ink">public/images/places/</code>
+      with the same name as the listing file. It’s optional. Without one, the card shows the
+      business’s first letter instead.
+    </p>
+
+    <ul class="mt-6 grid gap-6 md:grid-cols-2">
+      {
+        imageSpecs.map((spec) => (
+          <li class="flex flex-col border border-line bg-surface">
+            <div class="flex h-48 items-center justify-center border-b border-line bg-paper p-6">
+              <span
+                class:list={[
+                  'flex items-center justify-center border-2 border-dashed border-line text-xs uppercase tracking-[0.16em] text-muted',
+                  spec.title === 'Logo' ? 'aspect-square h-full' : 'aspect-[3/2] h-full',
+                ]}
+                aria-hidden="true"
+              >
+                {spec.title === 'Logo' ? '1:1' : '3:2'}
+              </span>
+            </div>
+            <div class="p-5">
+              <h3 class="font-serif text-2xl font-medium">{spec.title}</h3>
+              <p class="mt-3 text-xs uppercase tracking-[0.14em] text-muted">Format</p>
+              <p class="text-sm">{spec.format}</p>
+              <p class="mt-3 text-xs uppercase tracking-[0.14em] text-muted">Size</p>
+              <p class="text-sm">{spec.size}</p>
+              <p class="mt-3 text-sm leading-relaxed">{spec.note}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-6 grid gap-6 md:grid-cols-2">
+      <div class="border-t-2 border-olive bg-surface p-5">
+        <h3 class="font-serif text-xl font-medium">Do</h3>
+        <ul class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed">
+          {imageDos.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+      <div class="border-t-2 border-rust bg-surface p-5">
+        <h3 class="font-serif text-xl font-medium">Don’t</h3>
+        <ul class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed">
+          {imageDonts.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="description" class="mx-auto max-w-5xl scroll-mt-6 px-4 pt-16" aria-labelledby="description-title">
+    <p class="text-xs uppercase tracking-[0.16em] text-rust">04</p>
+    <h2 id="description-title" class="mt-1 font-serif text-3xl font-medium tracking-tight">Description</h2>
+    <p class="mt-3 max-w-2xl text-muted">
+      One to three sentences below the details, shown on the business’s page. Say what they make or
+      do, and anything a neighbor would want to know before walking over.
+    </p>
+
+    <div class="mt-6 grid gap-6 md:grid-cols-2">
+      <div class="border-t-2 border-olive bg-surface p-5">
+        <h3 class="font-serif text-xl font-medium">Like this</h3>
+        <p class="mt-3 text-sm leading-relaxed">
+          “Fine charcuterie, hand-crafted from locally sourced Montana ingredients. In the historic
+          Bon-Ton Flour Mill building.”
+        </p>
+      </div>
+      <div class="border-t-2 border-rust bg-surface p-5">
+        <h3 class="font-serif text-xl font-medium">Not like this</h3>
+        <p class="mt-3 text-sm leading-relaxed">
+          “Bozeman’s premier destination for world-class artisanal experiences. Your one-stop shop
+          for all things amazing!”
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="template" class="mx-auto max-w-5xl scroll-mt-6 px-4 pt-16" aria-labelledby="template-title">
+    <p class="text-xs uppercase tracking-[0.16em] text-rust">05</p>
+    <h2 id="template-title" class="mt-1 font-serif text-3xl font-medium tracking-tight">Template</h2>
+    <p class="mt-3 max-w-2xl text-muted">
+      Copy this into a new file and replace the details. Delete any optional line the business
+      doesn’t have.
+    </p>
+
+    <div class="mt-6 border border-line bg-surface">
+      <div class="flex items-center justify-between border-b border-line px-4 py-2">
+        <code class="font-mono text-xs text-muted">src/content/places/gangbusters-pottery.md</code>
+        <button
+          type="button"
+          class="border border-rust px-3 py-1 text-sm font-semibold text-rust hover:bg-rust hover:text-surface"
+          data-copy={template}
+        >
+          Copy
+        </button>
+      </div>
+      <pre class="overflow-x-auto p-4 font-mono text-sm leading-relaxed"><code>{template}</code></pre>
+    </div>
+  </section>
+
+  <section id="checklist" class="mx-auto max-w-5xl scroll-mt-6 px-4 pt-16" aria-labelledby="checklist-title">
+    <p class="text-xs uppercase tracking-[0.16em] text-rust">06</p>
+    <h2 id="checklist-title" class="mt-1 font-serif text-3xl font-medium tracking-tight">Checklist</h2>
+    <p class="mt-3 max-w-2xl text-muted">Before a listing goes live.</p>
+
+    <ul class="mt-6 max-w-2xl divide-y divide-line border border-line bg-surface">
+      {
+        checklist.map((item) => (
+          <li class="flex items-start gap-3 px-5 py-3">
+            <span class="mt-1 inline-block h-4 w-4 shrink-0 border-2 border-olive" aria-hidden="true" />
+            <span>{item}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <p
+    id="copy-status"
+    role="status"
+    aria-live="polite"
+    class="pointer-events-none fixed bottom-6 left-1/2 z-50 -translate-x-1/2 bg-ink px-4 py-2 text-sm font-semibold text-surface opacity-0 transition-opacity"
+  >
+  </p>
+</BaseLayout>
+
+<script>
+  const status = document.getElementById('copy-status');
+  let hideTimer: number | undefined;
+
+  document.addEventListener('click', async (event) => {
+    const trigger = (event.target as Element | null)?.closest<HTMLElement>('[data-copy]');
+    const text = trigger?.dataset.copy;
+    if (!text || !status) return;
+    let ok = true;
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      ok = false;
+    }
+    status.textContent = ok ? 'Template copied' : 'Couldn’t copy. Select the text instead.';
+    status.classList.remove('opacity-0');
+    window.clearTimeout(hideTimer);
+    hideTimer = window.setTimeout(() => status.classList.add('opacity-0'), 1600);
+  });
+</script>

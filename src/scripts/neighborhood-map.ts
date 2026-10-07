@@ -37,6 +37,7 @@ export type NeighborhoodMapConfig = {
 type MapHandle = {
   fitBounds: (bounds: BoundsHandle, padding: number) => void;
   panTo: (position: LatLng) => void;
+  setZoom: (zoom: number) => void;
 };
 
 type BoundsHandle = {
@@ -73,6 +74,7 @@ declare global {
 
 const SPREAD_METERS = 20;
 const NEAR_METERS = 8000;
+const FOCUS_ZOOM = 18;
 
 function spreadOverlapping(points: MapPoint[]): MapPoint[] {
   if (points.length <= 1) return points.map((point) => ({ ...point }));
@@ -339,15 +341,15 @@ export function mountNeighborhoodMap(config: NeighborhoodMapConfig): void {
   let maps: MapsApi | null = null;
   let mapReady = false;
   let mapFailed = false;
-  const placeMarkers: MarkerHandle[] = [];
+  const placeMarkers = new Map<string, { marker: MarkerHandle; point: MapPoint }>();
   let youMarker: MarkerHandle | null = null;
   let youPosition: LatLng | null = null;
   let youMessage = '';
 
   function redrawPlaces(): void {
     if (!mapReady || !map || !maps || !infoWindow || mapFailed) return;
-    for (const marker of placeMarkers) marker.setMap(null);
-    placeMarkers.length = 0;
+    for (const { marker } of placeMarkers.values()) marker.setMap(null);
+    placeMarkers.clear();
     infoWindow.close();
 
     const points = spreadOverlapping(
@@ -379,7 +381,7 @@ export function mountNeighborhoodMap(config: NeighborhoodMapConfig): void {
         infoWindow?.setContent(buildPlaceCard(point));
         infoWindow?.open({ map: map as MapHandle, anchor: marker, shouldFocus: false });
       });
-      placeMarkers.push(marker);
+      placeMarkers.set(point.slug, { marker, point });
     }
 
     if (youPosition && distanceMeters(youPosition, config.center) <= NEAR_METERS) {
@@ -388,6 +390,27 @@ export function mountNeighborhoodMap(config: NeighborhoodMapConfig): void {
     map.fitBounds(bounds, 48);
     maps.event.trigger(map, 'resize');
   }
+
+  function focusPlace(slug: string): boolean {
+    const entry = placeMarkers.get(slug);
+    if (!entry || !map || !infoWindow || !mapElement) return false;
+    const { marker, point } = entry;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    mapElement.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+    map.setZoom(FOCUS_ZOOM);
+    map.panTo({ lat: point.lat, lng: point.lng });
+    infoWindow.setContent(buildPlaceCard(point));
+    infoWindow.open({ map, anchor: marker, shouldFocus: false });
+    return true;
+  }
+
+  list?.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const link = target.closest<HTMLElement>('[data-map-focus]');
+    const slug = link?.dataset.mapFocus;
+    if (slug && focusPlace(slug)) event.preventDefault();
+  });
 
   function placeYou(position: LatLng): void {
     if (!map || !maps || !infoWindow) return;
