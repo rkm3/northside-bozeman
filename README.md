@@ -60,7 +60,7 @@ Custom domains and DNS are out of scope for this draft.
 
 ## Boundary
 
-`src/data/northside-boundary.ts` is a **placeholder** ring around the Historic Brewery District / N. Wallace Avenue 700–800 blocks (about 45.685–45.69 N, 111.03 W). It is approximate and still to be confirmed. It is not an official GIS boundary. The map page says so in the UI.
+`src/data/northside-boundary.ts` is an approximate ring around the Historic Brewery District, with the west edge on N. Rouse Ave and the southeast corner just past N. Broadway. It is not an official GIS boundary; the map legend labels it "Approximate Northside boundary."
 
 ## CMS
 

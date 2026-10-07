@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import {
   boundaryCenter,
-  northsideBoundaryNote,
   northsideBoundaryRing,
   northsideBoundaryStyle,
 } from '../data/northside-boundary';
@@ -192,7 +191,6 @@ const mapConfig = JSON.stringify({
       )
     }
   </div>
-  <p class="mt-2 max-w-3xl text-sm leading-relaxed text-muted">{northsideBoundaryNote}</p>
 
   <h2 class="mt-10 font-serif text-2xl font-medium">Places on this map</h2>
   <ul id="place-list" class="mt-4 grid gap-4 sm:grid-cols-2">

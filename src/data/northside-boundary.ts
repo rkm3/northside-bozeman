@@ -3,18 +3,17 @@ import { brandColors } from './brand';
 export type LatLng = { lat: number; lng: number };
 
 /**
- * Placeholder ring for the Northside / Historic Brewery District.
- * Focused on the N. Wallace Avenue 700–800 blocks in Bozeman
- * (about 45.685–45.69 N, 111.03 W). Not an official GIS boundary.
- * Replace these points when the association confirms the outline.
+ * Approximate ring for the Northside / Historic Brewery District.
+ * West edge follows N. Rouse Ave; the southeast corner reaches past
+ * N. Broadway to include Roly-Poly Coffee. Not an official GIS boundary.
  */
 export const northsideBoundaryRing: LatLng[] = [
-  { lat: 45.6902, lng: -111.0372 },
+  { lat: 45.6902, lng: -111.0316 },
   { lat: 45.6906, lng: -111.031 },
   { lat: 45.6894, lng: -111.0258 },
-  { lat: 45.6852, lng: -111.0246 },
-  { lat: 45.6838, lng: -111.0304 },
-  { lat: 45.6846, lng: -111.0368 },
+  { lat: 45.6853, lng: -111.0232 },
+  { lat: 45.6841, lng: -111.0229 },
+  { lat: 45.6838, lng: -111.0319 },
 ];
 
 /** Warm fill so the outline reads as Northside, not a borrowed map style. */
@@ -24,9 +23,6 @@ export const northsideBoundaryStyle = {
   stroke: brandColors.rust,
   strokeOpacity: 0.95,
 } as const;
-
-export const northsideBoundaryNote =
-  'This outline is a placeholder for the Northside / Historic Brewery District, drawn around the N. Wallace Avenue 700–800 blocks. It is approximate and still to be confirmed — not an official city or GIS boundary.';
 
 export function boundaryCenter(ring: LatLng[]): LatLng {
   const totals = ring.reduce(
