@@ -13,18 +13,19 @@ tech startup.
 
 All brand files live in `public/brand/` and are served from `/brand/…`.
 
-| File                                    | What it is                                    |
-| --------------------------------------- | --------------------------------------------- |
-| `northside-bozeman-logo-primary.png`    | Primary logo, transparent (1212×1073)         |
-| `northside-bozeman-logo-primary.webp`   | Same, web-optimized — use this in pages       |
-| `northside-bozeman-logo-badge.png`      | Circular badge, transparent (508×487)         |
-| `northside-bozeman-logo-badge.webp`     | Same, web-optimized                           |
-| `northside-bozeman-icon.png`            | Square app icon (215×216)                     |
-| `northside-bozeman-logo-sheet.jpg/.webp`| Original logo concept sheet                   |
-| `northside-bozeman-color-palette.jpg/.webp` | Original palette concept sheet            |
+| File                                         | What it is                                   |
+| -------------------------------------------- | -------------------------------------------- |
+| `northside-bozeman-logo-primary.svg` / `.png`| Primary logo. SVG is the master; PNG is 2400px, transparent |
+| `northside-bozeman-logo-badge.svg` / `.png`  | Circular badge. PNG is 1600px, transparent   |
+| `northside-bozeman-icon.svg` / `.png`        | Square app icon. PNG is 512px                |
+| `northside-bozeman-color-palette.jpg/.webp`  | Original palette concept sheet               |
 
-Favicons generated from the icon live at the root of `public/`: `favicon.ico`, `favicon-32.png`,
-`apple-touch-icon.png`.
+Favicons generated from the icon live at the root of `public/`: `favicon.svg`, `favicon.ico`,
+`favicon-32.png`, `apple-touch-icon.png`.
+
+**Never hand-edit these files.** They are all generated from the source art in `design/logo/` by
+one script. See [`design/logo/README.md`](design/logo/README.md) for how to rebuild them or
+change the logo.
 
 In code, render logos with the `Logo` component rather than raw `<img>` tags:
 
@@ -33,9 +34,9 @@ In code, render logos with the `Logo` component rather than raw `<img>` tags:
 <Logo variant="badge" alt="" class="h-auto w-16" /> <!-- alt="" when a text label sits next to it -->
 ```
 
-> **Known gap:** these logos were cut from an AI-generated raster sheet. They are fine for the web
-> but too small and soft for print, signage, or merch. Get vector (SVG/PDF) masters redrawn before
-> anything is printed, and replace these files when you have them.
+> **Print note:** the SVGs are traced from AI raster art. They're crisp at any size, but corners
+> are slightly soft and fine details are simplified. Fine for most print; for large signage, have a
+> designer clean up the SVG first.
 
 ---
 

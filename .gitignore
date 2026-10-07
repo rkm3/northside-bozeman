@@ -20,6 +20,13 @@ pnpm-debug.log*
 # wrangler local state
 .wrangler/
 
+# logo pipeline scratch output (see design/logo/README.md)
+.trace-work/
+__pycache__/
+
+# raw AI image downloads; rename into design/logo/sources/ to keep one
+Gemini_Generated_Image_*
+
 # macOS-specific files
 .DS_Store
 

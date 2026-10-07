@@ -17,28 +17,28 @@ const logos: {
   name: string;
   use: string;
   minimum: string;
-  download: string;
+  file: string;
 }[] = [
   {
     variant: 'primary',
     name: 'Primary logo',
     use: 'The full lockup with “Business Group.” Use it wherever there is room: the home page, posters, banners, signage, and print.',
     minimum: '240px wide on screen · 2 in. in print',
-    download: '/brand/northside-bozeman-logo-primary.png',
+    file: 'northside-bozeman-logo-primary',
   },
   {
     variant: 'badge',
     name: 'Badge',
     use: 'The compact circular mark. Use it in tight spaces: the site header, stickers, merch, social posts, and partner listings.',
     minimum: '64px wide on screen · 0.75 in. in print',
-    download: '/brand/northside-bozeman-logo-badge.png',
+    file: 'northside-bozeman-logo-badge',
   },
   {
     variant: 'icon',
     name: 'App icon',
     use: 'The square “N” tile. Use it for favicons, app icons, and square social avatars. It is the only mark that works on dark backgrounds.',
     minimum: '16px (favicon)',
-    download: '/brand/northside-bozeman-icon.png',
+    file: 'northside-bozeman-icon',
   },
 ];
 
@@ -70,7 +70,7 @@ const ratingClass = {
 const logoDos = [
   'Place logos on Warm Off-White, Card Surface, or plain white.',
   'Keep clear space around the logo equal to the height of the “B” in BOZEMAN.',
-  'Scale proportionally, and use the PNG files from this page.',
+  'Scale proportionally, and use the SVG or PNG files from this page.',
 ];
 const logoDonts = [
   'Don’t put the primary logo or badge on dark, busy, or photographic backgrounds. Use the app icon there.',
@@ -116,7 +116,8 @@ const sectionNav = [
     <p class="text-xs uppercase tracking-[0.16em] text-rust">01</p>
     <h2 id="logos-title" class="mt-1 font-serif text-3xl font-medium tracking-tight">Logos</h2>
     <p class="mt-3 max-w-2xl text-muted">
-      Three marks, one family. Use the biggest one that fits. All downloads are transparent PNGs.
+      Three marks, one family. Use the biggest one that fits. SVG scales to any size, including
+      print; use the transparent PNG where SVG isn’t accepted.
     </p>
 
     <ul class="mt-8 grid gap-6 md:grid-cols-3">
@@ -139,13 +140,19 @@ const sectionNav = [
               <p class="mt-2 text-sm leading-relaxed">{logo.use}</p>
               <p class="mt-3 text-xs uppercase tracking-[0.14em] text-muted">Minimum size</p>
               <p class="text-sm">{logo.minimum}</p>
-              <a
-                class="mt-auto inline-flex self-start pt-5 text-sm font-semibold text-rust underline-offset-4 hover:underline"
-                href={logo.download}
-                download
-              >
-                Download PNG
-              </a>
+              <p class="mt-auto flex gap-4 pt-5 text-sm font-semibold">
+                {
+                  (['svg', 'png'] as const).map((ext) => (
+                    <a
+                      class="text-rust underline-offset-4 hover:underline"
+                      href={`/brand/${logo.file}.${ext}`}
+                      download
+                    >
+                      Download {ext.toUpperCase()}
+                    </a>
+                  ))
+                }
+              </p>
             </div>
           </li>
         ))
@@ -167,22 +174,6 @@ const sectionNav = [
       </div>
     </div>
 
-    <figure class="mt-8 border border-line bg-surface p-3">
-      <img
-        src="/brand/northside-bozeman-logo-sheet.webp"
-        width="1600"
-        height="893"
-        alt="Logo sheet showing the badge, primary logo, and app icon side by side."
-        loading="lazy"
-        class="block h-auto w-full"
-      />
-      <figcaption class="px-1 pt-3 text-sm text-muted">
-        The original logo sheet.{' '}
-        <a class="text-rust underline underline-offset-4" href="/brand/northside-bozeman-logo-sheet.jpg">
-          Full-resolution JPG
-        </a>
-      </figcaption>
-    </figure>
   </section>
 
   <section id="colors" class="mx-auto max-w-5xl scroll-mt-6 px-4 pt-16" aria-labelledby="colors-title">

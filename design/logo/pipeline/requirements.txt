@@ -1,0 +1,6 @@
+pillow
+numpy
+scipy
+scikit-image
+vtracer==0.6.15
+resvg-py
