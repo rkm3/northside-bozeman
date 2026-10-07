@@ -1,3 +1,5 @@
+import { brandColors } from './brand';
+
 export type LatLng = { lat: number; lng: number };
 
 /**
@@ -17,9 +19,9 @@ export const northsideBoundaryRing: LatLng[] = [
 
 /** Warm fill so the outline reads as Northside, not a borrowed map style. */
 export const northsideBoundaryStyle = {
-  fill: '#c4784a',
-  fillOpacity: 0.38,
-  stroke: '#8d3b28',
+  fill: brandColors.ember,
+  fillOpacity: 0.3,
+  stroke: brandColors.rust,
   strokeOpacity: 0.95,
 } as const;
 

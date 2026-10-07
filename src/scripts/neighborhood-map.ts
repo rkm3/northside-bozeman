@@ -1,3 +1,5 @@
+import { brandColors } from '../data/brand';
+
 type LatLng = { lat: number; lng: number };
 
 export type MapPoint = {
@@ -140,7 +142,7 @@ function linkLine(href: string, label: string, external = false): HTMLAnchorElem
   const link = document.createElement('a');
   link.href = href;
   link.textContent = label;
-  link.style.color = '#6a2b1d';
+  link.style.color = brandColors.rust;
   link.style.fontWeight = '600';
   if (external) {
     link.target = '_blank';
@@ -153,7 +155,7 @@ function buildPlaceCard(point: MapPoint): HTMLElement {
   const card = document.createElement('div');
   card.style.maxWidth = '320px';
   card.style.fontFamily = '"Source Sans 3", sans-serif';
-  card.style.color = '#221c17';
+  card.style.color = brandColors.ink;
 
   if (point.categoryLabel) {
     const category = textLine(point.categoryLabel, '');
@@ -161,7 +163,7 @@ function buildPlaceCard(point: MapPoint): HTMLElement {
     category.style.fontSize = '11px';
     category.style.letterSpacing = '0.08em';
     category.style.textTransform = 'uppercase';
-    category.style.color = '#5c5146';
+    category.style.color = brandColors.muted;
     card.appendChild(category);
   }
 
@@ -207,7 +209,7 @@ function buildPlaceCard(point: MapPoint): HTMLElement {
   address.style.margin = '6px 0 0';
   address.style.fontSize = '13px';
   address.style.lineHeight = '1.4';
-  address.style.color = '#5c5146';
+  address.style.color = brandColors.muted;
   card.appendChild(address);
 
   if (point.phone) {
@@ -225,7 +227,7 @@ function buildYouCard(message: string): HTMLElement {
   const card = document.createElement('div');
   card.style.maxWidth = '240px';
   card.style.fontFamily = '"Source Sans 3", sans-serif';
-  card.style.color = '#221c17';
+  card.style.color = brandColors.ink;
   const title = document.createElement('p');
   title.textContent = 'You are here';
   title.style.margin = '0';
@@ -235,7 +237,7 @@ function buildYouCard(message: string): HTMLElement {
   detail.style.margin = '6px 0 0';
   detail.style.fontSize = '13px';
   detail.style.lineHeight = '1.4';
-  detail.style.color = '#5c5146';
+  detail.style.color = brandColors.muted;
   card.append(title, detail);
   return card;
 }
@@ -407,9 +409,9 @@ export function mountNeighborhoodMap(config: NeighborhoodMapConfig): void {
       zIndex: 20,
       icon: {
         path: maps.SymbolPath.CIRCLE,
-        fillColor: '#24382e',
+        fillColor: brandColors.ink,
         fillOpacity: 1,
-        strokeColor: '#b08958',
+        strokeColor: brandColors.ochre,
         strokeWeight: 3,
         scale: 12,
       },

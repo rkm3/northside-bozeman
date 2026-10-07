@@ -1,5 +1,6 @@
 ---
 import DistrictLockup from './DistrictLockup.astro';
+import Logo from './Logo.astro';
 
 const path = Astro.url.pathname;
 
@@ -17,11 +18,12 @@ function isActive(href: string): boolean {
 }
 ---
 
-<header class="border-b border-line bg-cream">
+<header class="border-b border-line bg-surface">
   <div
-    class="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-end sm:justify-between"
+    class="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
   >
-    <a href="/" class="block" aria-label="Northside Bozeman">
+    <a href="/" class="flex items-center gap-3" aria-label="Northside Bozeman Business Group — home">
+      <Logo variant="badge" alt="" class="h-auto w-16 sm:w-[4.5rem]" />
       <DistrictLockup />
     </a>
     <nav aria-label="Primary">
@@ -37,8 +39,8 @@ function isActive(href: string): boolean {
                   class:list={[
                     'text-sm underline-offset-4',
                     active
-                      ? 'font-semibold text-brick-deep underline'
-                      : 'text-ink hover:text-brick-deep hover:underline',
+                      ? 'font-semibold text-rust underline'
+                      : 'text-ink hover:text-rust hover:underline',
                   ]}
                 >
                   {item.label}
@@ -50,6 +52,6 @@ function isActive(href: string): boolean {
       </ul>
     </nav>
   </div>
-  <div class="h-1 bg-brick"></div>
-  <div class="h-px bg-gold"></div>
+  <div class="h-1 bg-rust"></div>
+  <div class="h-px bg-ochre"></div>
 </header>

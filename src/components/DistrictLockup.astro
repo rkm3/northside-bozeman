@@ -1,40 +1,27 @@
 ---
 interface Props {
-  size?: 'compact' | 'display';
-  tone?: 'ink' | 'cream';
+  tone?: 'ink' | 'light';
 }
 
-const { size = 'compact', tone = 'ink' } = Astro.props;
-const onCream = tone === 'cream';
+const { tone = 'ink' } = Astro.props;
+const onDark = tone === 'light';
 ---
 
 <span class="inline-flex max-w-full flex-col">
   <span
     class:list={[
-      'font-serif font-medium leading-none tracking-[0.22em]',
-      onCream ? 'text-cream/80' : 'text-brick-deep',
-      size === 'display' ? 'text-sm sm:text-base' : 'text-xs',
+      'font-serif text-2xl font-semibold leading-[0.95]',
+      onDark ? 'text-surface' : 'text-rust',
     ]}
   >
-    NBD
+    Northside Bozeman
   </span>
   <span
     class:list={[
-      'font-serif font-medium leading-[0.95]',
-      onCream ? 'text-cream' : 'text-ink',
-      size === 'display' ? 'mt-2 text-5xl sm:text-7xl' : 'mt-1 text-2xl',
+      'mt-1.5 text-xs font-semibold uppercase leading-none tracking-[0.22em]',
+      onDark ? 'text-ochre' : 'text-olive',
     ]}
   >
-    {
-      size === 'display' ? (
-        <>
-          Northside
-          <br />
-          Bozeman
-        </>
-      ) : (
-        'Northside Bozeman'
-      )
-    }
+    Business Group
   </span>
 </span>

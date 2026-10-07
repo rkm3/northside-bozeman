@@ -8,6 +8,10 @@ astro dev --background
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
+## Design
+
+Read `DESIGN.md` before any UI, styling, or content work. Use the brand color tokens and the `Logo` component, never one-off hex values.
+
 ## Documentation
 
 Full documentation: https://docs.astro.build

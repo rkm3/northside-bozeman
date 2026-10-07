@@ -1,0 +1,61 @@
+---
+import { brandColors, type BrandSwatch } from '../data/brand';
+import { formatRgb } from '../utils/color';
+
+interface Props {
+  swatch: BrandSwatch;
+  size?: 'large' | 'small';
+}
+
+const { swatch, size = 'large' } = Astro.props;
+const hex = brandColors[swatch.key];
+const values = [
+  { label: 'HEX', value: hex },
+  { label: 'RGB', value: formatRgb(hex) },
+  { label: 'CSS', value: `--color-${swatch.token}` },
+];
+---
+
+<li class="flex flex-col border border-line bg-surface">
+  <button
+    type="button"
+    class:list={[
+      'group relative block w-full border-b border-line text-left',
+      size === 'large' ? 'h-32' : 'h-20',
+    ]}
+    style={`background:${hex}`}
+    data-copy={hex}
+    aria-label={`Copy ${swatch.name} ${hex}`}
+  >
+    <span
+      class="absolute bottom-2 right-2 bg-surface/90 px-2 py-0.5 text-xs font-semibold text-ink opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+      aria-hidden="true"
+    >
+      Copy {hex}
+    </span>
+  </button>
+  <div class="flex flex-1 flex-col p-4">
+    <p class="text-xs uppercase tracking-[0.16em] text-muted">{swatch.role}</p>
+    <h3 class="mt-1 font-serif text-xl font-medium">{swatch.name}</h3>
+    <p class="mt-2 text-sm leading-relaxed text-muted">{swatch.usage}</p>
+    <dl class="mt-auto space-y-2 pt-4">
+      {
+        values.map(({ label, value }) => (
+          <div>
+            <dt class="text-[0.65rem] font-semibold tracking-[0.14em] text-muted">{label}</dt>
+            <dd>
+              <button
+                type="button"
+                class="max-w-full break-all text-left font-mono text-xs text-ink underline decoration-line underline-offset-4 hover:text-rust hover:decoration-rust"
+                data-copy={value}
+                aria-label={`Copy ${swatch.name} ${label} ${value}`}
+              >
+                {value}
+              </button>
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</li>

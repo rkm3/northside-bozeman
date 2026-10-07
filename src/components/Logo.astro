@@ -1,0 +1,35 @@
+---
+import type { LogoVariant } from '../data/brand';
+
+interface Props {
+  variant: LogoVariant;
+  class?: string;
+  /** Pass `""` when a visible label or heading already names the brand. */
+  alt?: string;
+  loading?: 'eager' | 'lazy';
+}
+
+const logos: Record<LogoVariant, { src: string; width: number; height: number }> = {
+  primary: { src: '/brand/northside-bozeman-logo-primary.webp', width: 1212, height: 1073 },
+  badge: { src: '/brand/northside-bozeman-logo-badge.webp', width: 508, height: 487 },
+  icon: { src: '/brand/northside-bozeman-icon.png', width: 215, height: 216 },
+};
+
+const {
+  variant,
+  class: className,
+  alt = 'Northside Bozeman Business Group',
+  loading = 'eager',
+} = Astro.props;
+const logo = logos[variant];
+---
+
+<img
+  src={logo.src}
+  width={logo.width}
+  height={logo.height}
+  alt={alt}
+  loading={loading}
+  decoding="async"
+  class:list={['block', className]}
+/>

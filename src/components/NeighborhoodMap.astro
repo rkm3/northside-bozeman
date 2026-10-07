@@ -81,13 +81,13 @@ const mapConfig = JSON.stringify({
 <style>
   .place-filter {
     border: 1px solid var(--color-line);
-    background: var(--color-cream);
+    background: var(--color-surface);
     color: var(--color-ink);
   }
   .place-filter[aria-pressed='true'] {
-    border-color: var(--color-brick);
-    background: var(--color-brick);
-    color: var(--color-cream);
+    border-color: var(--color-rust);
+    background: var(--color-rust);
+    color: var(--color-surface);
   }
   .legend-item.is-dim {
     opacity: 0.35;
@@ -123,15 +123,15 @@ const mapConfig = JSON.stringify({
       apiKey ? (
         <div
           id="neighborhood-map"
-          class="h-96 border border-line bg-cream sm:h-[32rem]"
+          class="h-96 border border-line bg-surface sm:h-[32rem]"
           role="region"
           aria-label="Northside neighborhood map"
         />
       ) : (
-        <div class="border border-dashed border-line bg-cream px-4 py-8 sm:px-8">
+        <div class="border border-dashed border-line bg-surface px-4 py-8 sm:px-8">
           <div class="mx-auto max-w-md">
             <svg viewBox="0 0 320 200" class="h-auto w-full" role="img" aria-label="Approximate Northside boundary sketch">
-              <rect width="320" height="200" fill="#f7f1e6" />
+              <rect width="320" height="200" fill="var(--color-paper)" />
               <polygon
                 points={sketchPoints}
                 fill={northsideBoundaryStyle.fill}
@@ -167,12 +167,12 @@ const mapConfig = JSON.stringify({
         ))
       }
       <span class="inline-flex items-center gap-1.5">
-        <span class="inline-block h-3 w-3 border border-brick bg-brick/40" aria-hidden="true" />
+        <span class="inline-block h-3 w-3 border border-rust bg-rust/40" aria-hidden="true" />
         Approximate Northside boundary
       </span>
       <span id="you-legend" class="hidden">
         <span class="inline-flex items-center gap-1.5">
-          <span class="inline-block h-3 w-3 rounded-full border-2 border-gold bg-hop" aria-hidden="true" />
+          <span class="inline-block h-3 w-3 rounded-full border-2 border-ochre bg-ink" aria-hidden="true" />
           You
         </span>
       </span>
@@ -183,7 +183,7 @@ const mapConfig = JSON.stringify({
           <button
             id="show-me-on-map"
             type="button"
-            class="border border-brick bg-cream px-3 py-2 text-sm font-semibold text-brick-deep hover:bg-brick hover:text-cream disabled:opacity-60"
+            class="border border-rust bg-surface px-3 py-2 text-sm font-semibold text-rust hover:bg-rust hover:text-surface disabled:opacity-60"
           >
             Show me on the map
           </button>
@@ -203,7 +203,7 @@ const mapConfig = JSON.stringify({
           <li class="h-full" data-categories={place.data.categories.join(',')}>
             <a
               href={`/places/${place.id}`}
-              class="flex h-full flex-col overflow-hidden border border-line bg-cream hover:border-brick"
+              class="flex h-full flex-col overflow-hidden border border-line bg-surface hover:border-rust"
             >
               {cover && (
                 <img
@@ -218,7 +218,7 @@ const mapConfig = JSON.stringify({
                 />
               )}
               <span class="flex flex-1 flex-col p-4">
-                <span class="text-xs uppercase tracking-[0.14em] text-brick-deep">
+                <span class="text-xs uppercase tracking-[0.14em] text-rust">
                   {formatCategoryLabels(place.data.categories)}
                 </span>
                 <span class="mt-1 font-serif text-xl">{place.data.name}</span>

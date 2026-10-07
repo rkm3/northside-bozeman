@@ -1,0 +1,409 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import ColorSwatch from '../components/ColorSwatch.astro';
+import Logo from '../components/Logo.astro';
+import {
+  brandColors,
+  coreSwatches,
+  functionalSwatches,
+  type BrandColorKey,
+  type LogoVariant,
+} from '../data/brand';
+import { contrastRatio, rateContrast } from '../utils/color';
+
+const logos: {
+  variant: LogoVariant;
+  name: string;
+  use: string;
+  minimum: string;
+  download: string;
+}[] = [
+  {
+    variant: 'primary',
+    name: 'Primary logo',
+    use: 'The full lockup with “Business Group.” Use it wherever there is room: the home page, posters, banners, signage, and print.',
+    minimum: '240px wide on screen · 2 in. in print',
+    download: '/brand/northside-bozeman-logo-primary.png',
+  },
+  {
+    variant: 'badge',
+    name: 'Badge',
+    use: 'The compact circular mark. Use it in tight spaces: the site header, stickers, merch, social posts, and partner listings.',
+    minimum: '64px wide on screen · 0.75 in. in print',
+    download: '/brand/northside-bozeman-logo-badge.png',
+  },
+  {
+    variant: 'icon',
+    name: 'App icon',
+    use: 'The square “N” tile. Use it for favicons, app icons, and square social avatars. It is the only mark that works on dark backgrounds.',
+    minimum: '16px (favicon)',
+    download: '/brand/northside-bozeman-icon.png',
+  },
+];
+
+const pairings: { fg: BrandColorKey; bg: BrandColorKey; label: string }[] = [
+  { fg: 'ink', bg: 'paper', label: 'Body text' },
+  { fg: 'muted', bg: 'paper', label: 'Secondary text' },
+  { fg: 'rust', bg: 'paper', label: 'Links, headings' },
+  { fg: 'olive', bg: 'paper', label: 'Supporting headings' },
+  { fg: 'emberDeep', bg: 'paper', label: 'Orange text' },
+  { fg: 'surface', bg: 'rust', label: 'Primary button' },
+  { fg: 'surface', bg: 'olive', label: 'Olive button / tag' },
+  { fg: 'ink', bg: 'ochre', label: 'Highlight badge' },
+  { fg: 'surface', bg: 'ink', label: 'Footer text' },
+  { fg: 'ochre', bg: 'ink', label: 'Accent on dark' },
+  { fg: 'ember', bg: 'paper', label: 'Display type only' },
+  { fg: 'ochre', bg: 'paper', label: 'Never for text' },
+].map((pair) => {
+  const ratio = contrastRatio(brandColors[pair.fg], brandColors[pair.bg]);
+  return { ...pair, ratio, rating: rateContrast(ratio) };
+});
+
+const ratingClass = {
+  AAA: 'bg-olive text-surface',
+  AA: 'bg-olive text-surface',
+  'AA Large': 'bg-ochre text-ink',
+  Fail: 'bg-rust text-surface',
+} as const;
+
+const logoDos = [
+  'Place logos on Warm Off-White, Card Surface, or plain white.',
+  'Keep clear space around the logo equal to the height of the “B” in BOZEMAN.',
+  'Scale proportionally, and use the PNG files from this page.',
+];
+const logoDonts = [
+  'Don’t put the primary logo or badge on dark, busy, or photographic backgrounds. Use the app icon there.',
+  'Don’t recolor, stretch, rotate, outline, or add shadows.',
+  'Don’t retype the wordmark in a font. The lettering is custom.',
+];
+
+const sectionNav = [
+  { href: '#logos', label: 'Logos' },
+  { href: '#colors', label: 'Colors' },
+  { href: '#accessibility', label: 'Accessibility' },
+  { href: '#typography', label: 'Typography' },
+  { href: '#components', label: 'Components' },
+  { href: '#voice', label: 'Voice' },
+];
+---
+
+<BaseLayout
+  title="Brand guidelines"
+  description="Logos, colors, type, and usage guidelines for the Northside Bozeman Business Group."
+>
+  <PageHeader
+    kicker="Brand identity"
+    title="Northside Bozeman brand guidelines"
+    lede="Logos, colors, and type for anyone making something for the Northside. Click any color value to copy it."
+  />
+
+  <nav aria-label="On this page" class="mx-auto max-w-5xl px-4 pt-6">
+    <ul class="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+      {
+        sectionNav.map((item) => (
+          <li>
+            <a class="text-rust underline-offset-4 hover:underline" href={item.href}>
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <section id="logos" class="mx-auto max-w-5xl scroll-mt-6 px-4 pt-14" aria-labelledby="logos-title">
+    <p class="text-xs uppercase tracking-[0.16em] text-rust">01</p>
+    <h2 id="logos-title" class="mt-1 font-serif text-3xl font-medium tracking-tight">Logos</h2>
+    <p class="mt-3 max-w-2xl text-muted">
+      Three marks, one family. Use the biggest one that fits. All downloads are transparent PNGs.
+    </p>
+
+    <ul class="mt-8 grid gap-6 md:grid-cols-3">
+      {
+        logos.map((logo) => (
+          <li class="flex flex-col border border-line bg-surface">
+            <div class="flex h-64 items-center justify-center border-b border-line bg-paper p-6">
+              <Logo
+                variant={logo.variant}
+                loading="lazy"
+                class={
+                  logo.variant === 'icon'
+                    ? 'h-28 w-auto'
+                    : 'h-full w-auto max-w-full object-contain'
+                }
+              />
+            </div>
+            <div class="flex flex-1 flex-col p-5">
+              <h3 class="font-serif text-2xl font-medium">{logo.name}</h3>
+              <p class="mt-2 text-sm leading-relaxed">{logo.use}</p>
+              <p class="mt-3 text-xs uppercase tracking-[0.14em] text-muted">Minimum size</p>
+              <p class="text-sm">{logo.minimum}</p>
+              <a
+                class="mt-auto inline-flex self-start pt-5 text-sm font-semibold text-rust underline-offset-4 hover:underline"
+                href={logo.download}
+                download
+              >
+                Download PNG
+              </a>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-6 grid gap-6 md:grid-cols-2">
+      <div class="border-t-2 border-olive bg-surface p-5">
+        <h3 class="font-serif text-xl font-medium">Do</h3>
+        <ul class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed">
+          {logoDos.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+      <div class="border-t-2 border-rust bg-surface p-5">
+        <h3 class="font-serif text-xl font-medium">Don’t</h3>
+        <ul class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed">
+          {logoDonts.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </div>
+
+    <figure class="mt-8 border border-line bg-surface p-3">
+      <img
+        src="/brand/northside-bozeman-logo-sheet.webp"
+        width="1600"
+        height="893"
+        alt="Logo sheet showing the badge, primary logo, and app icon side by side."
+        loading="lazy"
+        class="block h-auto w-full"
+      />
+      <figcaption class="px-1 pt-3 text-sm text-muted">
+        The original logo sheet.{' '}
+        <a class="text-rust underline underline-offset-4" href="/brand/northside-bozeman-logo-sheet.jpg">
+          Full-resolution JPG
+        </a>
+      </figcaption>
+    </figure>
+  </section>
+
+  <section id="colors" class="mx-auto max-w-5xl scroll-mt-6 px-4 pt-16" aria-labelledby="colors-title">
+    <p class="text-xs uppercase tracking-[0.16em] text-rust">02</p>
+    <h2 id="colors-title" class="mt-1 font-serif text-3xl font-medium tracking-tight">Colors</h2>
+    <p class="mt-3 max-w-2xl text-muted">
+      Rust and paper do most of the work. Orange, olive, and ochre are accents, not backgrounds for
+      whole pages. Click a swatch or any value to copy it.
+    </p>
+
+    <h3 class="mt-8 text-xs font-semibold uppercase tracking-[0.16em] text-muted">Core palette</h3>
+    <ul class="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      {coreSwatches.map((swatch) => <ColorSwatch swatch={swatch} />)}
+    </ul>
+
+    <h3 class="mt-10 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
+      Functional &amp; supporting
+    </h3>
+    <ul class="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {functionalSwatches.map((swatch) => <ColorSwatch swatch={swatch} size="small" />)}
+    </ul>
+
+    <figure class="mt-8 border border-line bg-surface p-3">
+      <img
+        src="/brand/northside-bozeman-color-palette.webp"
+        width="1600"
+        height="893"
+        alt="Color palette sheet: Primary Rust Red #A62B1D, Secondary #D96B07, Olive Forest Green #5C6F3B, Golden Yellow-Ochre #EBAF17, Warm Off-White #F9F5EE, text #2C351F, and surface #FDFBFA."
+        loading="lazy"
+        class="block h-auto w-full"
+      />
+      <figcaption class="px-1 pt-3 text-sm text-muted">
+        The original palette sheet.{' '}
+        <a
+          class="text-rust underline underline-offset-4"
+          href="/brand/northside-bozeman-color-palette.jpg"
+        >
+          Full-resolution JPG
+        </a>
+      </figcaption>
+    </figure>
+  </section>
+
+  <section
+    id="accessibility"
+    class="mx-auto max-w-5xl scroll-mt-6 px-4 pt-16"
+    aria-labelledby="accessibility-title"
+  >
+    <p class="text-xs uppercase tracking-[0.16em] text-rust">03</p>
+    <h2 id="accessibility-title" class="mt-1 font-serif text-3xl font-medium tracking-tight">
+      Accessible pairings
+    </h2>
+    <p class="mt-3 max-w-2xl text-muted">
+      WCAG contrast for common combinations. Body text needs AA (4.5:1). “AA Large” is only for
+      text at least 24px, or 19px bold.
+    </p>
+
+    <div class="mt-6 overflow-x-auto border border-line bg-surface">
+      <table class="w-full min-w-[36rem] text-left text-sm">
+        <thead class="border-b border-line text-xs uppercase tracking-[0.12em] text-muted">
+          <tr>
+            <th scope="col" class="px-4 py-3 font-semibold">Sample</th>
+            <th scope="col" class="px-4 py-3 font-semibold">Use</th>
+            <th scope="col" class="px-4 py-3 font-semibold">Ratio</th>
+            <th scope="col" class="px-4 py-3 font-semibold">Rating</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-line">
+          {
+            pairings.map((pair) => (
+              <tr>
+                <td class="px-4 py-3">
+                  <span
+                    class="inline-block px-3 py-1.5 font-semibold"
+                    style={`color:${brandColors[pair.fg]};background:${brandColors[pair.bg]}`}
+                  >
+                    Northside
+                  </span>
+                </td>
+                <td class="px-4 py-3">
+                  {pair.label}
+                  <span class="block text-xs text-muted">
+                    {brandColors[pair.fg]} on {brandColors[pair.bg]}
+                  </span>
+                </td>
+                <td class="px-4 py-3 font-mono">{pair.ratio.toFixed(2)}:1</td>
+                <td class="px-4 py-3">
+                  <span class:list={['px-2 py-0.5 text-xs font-semibold', ratingClass[pair.rating]]}>
+                    {pair.rating}
+                  </span>
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="typography" class="mx-auto max-w-5xl scroll-mt-6 px-4 pt-16" aria-labelledby="type-title">
+    <p class="text-xs uppercase tracking-[0.16em] text-rust">04</p>
+    <h2 id="type-title" class="mt-1 font-serif text-3xl font-medium tracking-tight">Typography</h2>
+    <p class="mt-3 max-w-2xl text-muted">
+      A warm, slightly old-fashioned serif for headings, and a plain sans for reading. Both are free
+      Google Fonts.
+    </p>
+
+    <div class="mt-6 grid gap-6 md:grid-cols-2">
+      <div class="border border-line bg-surface p-6">
+        <p class="text-xs uppercase tracking-[0.16em] text-muted">Headings · Fraunces 500–700</p>
+        <p class="mt-4 font-serif text-5xl font-medium leading-none tracking-tight">From Lager to Legacy</p>
+        <p class="mt-4 font-serif text-2xl font-medium">Historic Brewery District</p>
+        <p class="mt-2 font-serif text-xl italic text-olive">Bozeman, Montana</p>
+      </div>
+      <div class="border border-line bg-surface p-6">
+        <p class="text-xs uppercase tracking-[0.16em] text-muted">Body · Source Sans 3 400 / 600</p>
+        <p class="mt-4 text-lg leading-relaxed">
+          Artists, makers, brewers, and neighbors who keep the Northside local. Body copy is 16–18px,
+          with a line height around 1.6.
+        </p>
+        <p class="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-rust">
+          Kicker · uppercase, tracked
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="components" class="mx-auto max-w-5xl scroll-mt-6 px-4 pt-16" aria-labelledby="components-title">
+    <p class="text-xs uppercase tracking-[0.16em] text-rust">05</p>
+    <h2 id="components-title" class="mt-1 font-serif text-3xl font-medium tracking-tight">
+      Buttons &amp; details
+    </h2>
+    <p class="mt-3 max-w-2xl text-muted">
+      Square corners, flat fills, and a rust bar with an ochre hairline, like the site header.
+    </p>
+
+    <div class="mt-6 border border-line bg-surface p-6">
+      <div class="flex flex-wrap items-center gap-4">
+        <a href="#components" class="bg-rust px-4 py-2 text-sm font-semibold text-surface hover:bg-rust-deep">
+          Primary action
+        </a>
+        <a
+          href="#components"
+          class="border-2 border-ember-deep px-4 py-1.5 text-sm font-semibold text-ember-deep hover:bg-ember-deep hover:text-surface"
+        >
+          Secondary action
+        </a>
+        <a href="#components" class="bg-olive px-4 py-2 text-sm font-semibold text-surface hover:bg-olive-deep">
+          Nature / tag action
+        </a>
+        <span class="bg-ochre px-2 py-0.5 text-xs font-semibold uppercase tracking-[0.12em] text-ink">
+          New
+        </span>
+        <span class="rounded-full border border-line bg-surface px-3 py-1 text-sm">Filter chip</span>
+      </div>
+      <div class="mt-8">
+        <div class="h-1 bg-rust"></div>
+        <div class="h-px bg-ochre"></div>
+        <p class="mt-2 text-xs text-muted">Signature rule: 4px rust + 1px ochre.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="voice" class="mx-auto max-w-5xl scroll-mt-6 px-4 pt-16" aria-labelledby="voice-title">
+    <p class="text-xs uppercase tracking-[0.16em] text-rust">06</p>
+    <h2 id="voice-title" class="mt-1 font-serif text-3xl font-medium tracking-tight">Voice</h2>
+    <ul class="mt-6 grid gap-6 md:grid-cols-3">
+      <li class="border-t-2 border-rust bg-surface p-5">
+        <h3 class="font-serif text-xl font-medium">Neighborly</h3>
+        <p class="mt-2 text-sm leading-relaxed">Write like you’re talking over the fence. Say “we” and “our block,” not “stakeholders.”</p>
+      </li>
+      <li class="border-t-2 border-ember bg-surface p-5">
+        <h3 class="font-serif text-xl font-medium">Rooted</h3>
+        <p class="mt-2 text-sm leading-relaxed">Lean on real history: the brewery, the rail line, the grain elevators. Name real places and people.</p>
+      </li>
+      <li class="border-t-2 border-olive bg-surface p-5">
+        <h3 class="font-serif text-xl font-medium">Plainspoken</h3>
+        <p class="mt-2 text-sm leading-relaxed">Short sentences and concrete details. Skip the marketing superlatives.</p>
+      </li>
+    </ul>
+  </section>
+
+  <p
+    id="copy-status"
+    role="status"
+    aria-live="polite"
+    class="pointer-events-none fixed bottom-6 left-1/2 z-50 -translate-x-1/2 bg-ink px-4 py-2 text-sm font-semibold text-surface opacity-0 transition-opacity"
+  >
+  </p>
+</BaseLayout>
+
+<script>
+  const status = document.getElementById('copy-status');
+  let hideTimer: number | undefined;
+
+  async function copyText(text: string): Promise<boolean> {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      const field = document.createElement('textarea');
+      field.value = text;
+      field.setAttribute('readonly', '');
+      field.style.position = 'fixed';
+      field.style.opacity = '0';
+      document.body.append(field);
+      field.select();
+      const ok = document.execCommand('copy');
+      field.remove();
+      return ok;
+    }
+  }
+
+  document.addEventListener('click', async (event) => {
+    const trigger = (event.target as Element | null)?.closest<HTMLElement>('[data-copy]');
+    const text = trigger?.dataset.copy;
+    if (!text || !status) return;
+    const ok = await copyText(text);
+    status.textContent = ok ? `Copied ${text}` : `Couldn’t copy ${text}`;
+    status.classList.remove('opacity-0');
+    window.clearTimeout(hideTimer);
+    hideTimer = window.setTimeout(() => status.classList.add('opacity-0'), 1600);
+  });
+</script>
