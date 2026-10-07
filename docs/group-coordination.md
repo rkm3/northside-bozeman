@@ -118,8 +118,8 @@ Members comfortable with git can edit the files in the
 [repository](https://github.com/rkm3/northside-bozeman) and open a pull request:
 
 - Business text: `src/content/places/<slug>.md`
-- Photo: `public/images/places/<slug>.webp` (or `.jpg`, `.png`, `.avif`). The filename **must**
-  match the slug.
+- Photo: `src/content/places/<slug>/cover.jpg` (or `.webp`, `.png`, `.avif`), plus a
+  `cover: ./<slug>/cover.jpg` line in the business's front matter. The build optimizes it.
 - Stroll posters, maps, and photos: `public/events/<event id>/`, listed under `artifacts` in the
   event file.
 

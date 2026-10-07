@@ -40,7 +40,7 @@ const events = defineCollection({
 
 const places = defineCollection({
   loader: glob({ base: './src/content/places', pattern: '**/*.md' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     name: z.string(),
     categories: z.array(z.enum(PLACE_CATEGORIES)).min(1),
     address: z.string(),
@@ -51,6 +51,8 @@ const places = defineCollection({
     pinterest_handle: z.string().regex(/^[\w.]+$/).optional(),
     lat: z.number(),
     lng: z.number(),
+    // Lives in the place's folder, e.g. ./grotto-meats/cover.jpg.
+    cover: image().optional(),
   }),
 });
 

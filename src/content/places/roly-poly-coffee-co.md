@@ -6,5 +6,6 @@ address: 528 N Broadway Ave, Bozeman, MT 59715
 website: https://rolypoly.coffee/
 lat: 45.684735
 lng: -111.023581
+cover: ./roly-poly-coffee-co/cover.png
 ---
 Neighborhood coffee on North Broadway—stop in for espresso, breakfast, and a relaxed spot to connect downtown.

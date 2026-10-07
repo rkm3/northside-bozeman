@@ -33,7 +33,7 @@ two jobs.
 | Content | Where it lives | Shows up at |
 | --- | --- | --- |
 | Businesses | `src/content/places/<slug>.md` | `/map`, `/places/<slug>` |
-| Business photos/logos | `public/images/places/<slug>.<ext>` | Map popups, list cards, place pages |
+| Business photos/logos | `src/content/places/<slug>/cover.<ext>` | Map popups, list cards, place pages |
 | Events (strolls) | `src/content/events/<id>.md` | Home page spotlight, `/events`, `/events/<id>` |
 | Event posters, maps, photos | `public/events/<id>/` | The event's page |
 | About copy | `src/content/pages/*.md` | Home page, `/about` |
@@ -85,8 +85,9 @@ A short description of the business, in plain sentences.
   sets the pin color.
 - `website` and `phone` are optional.
 - `lat` / `lng` place the pin. The maintainer usually looks these up from the address.
-- A photo is optional. Drop a file named after the slug into `public/images/places/` (for example
-  `grotto-meats.webp`). Landscape photos are cropped to 3:2. A square PNG is treated as a logo
+- `cover` is an optional photo in the business's own folder, next to its listing file (for example
+  `cover: ./grotto-meats/cover.webp` points to `src/content/places/grotto-meats/cover.webp`). The
+  build resizes it and converts it to WebP, and fails if the path is wrong. Landscape photos are cropped to 3:2. A square PNG is treated as a logo
   and shown whole, not cropped.
 
 How members ask for changes is covered in

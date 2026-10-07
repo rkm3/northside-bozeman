@@ -7,5 +7,6 @@ website: https://www.blackpetalfarm.com/
 phone: (406) 570-7475
 lat: 45.682085
 lng: -111.033218
+cover: ./black-petal-farm/cover.webp
 ---
 A downtown Bozeman **specialty cut flower farm** and farmer-florist: seasonal bouquets, subscriptions, pop-up stands, bulbs and tubers, and florals for small events. Flowers are grown with natural inputs and efficient water use; the season generally runs May through September.

@@ -1,10 +1,11 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import LinkPill from '../../components/LinkPill.astro';
 import { formatCategoryLabels } from '../../data/place-categories';
-import { getPlaceCover } from '../../utils/place-image';
+import { isLogoCover } from '../../utils/place-image';
 import { getWebsiteLabel } from '../../utils/website-label';
 
 export async function getStaticPaths() {
@@ -17,7 +18,8 @@ export async function getStaticPaths() {
 
 const { place } = Astro.props;
 const { Content } = await render(place);
-const cover = getPlaceCover(place.id);
+const cover = place.data.cover;
+const isLogo = cover ? isLogoCover(cover) : false;
 const website = place.data.website;
 const { instagram_handle: instagramHandle, pinterest_handle: pinterestHandle } = place.data;
 ---
@@ -31,14 +33,15 @@ const { instagram_handle: instagramHandle, pinterest_handle: pinterestHandle } =
   <article class="mx-auto max-w-5xl px-4 py-6">
     {
       cover && (
-        <img
-          src={cover.src}
+        <Image
+          src={cover}
           alt={place.data.name}
-          width={cover.square ? 640 : 1200}
-          height={cover.square ? 640 : 800}
+          widths={isLogo ? [384, 768] : [768, 1200, 1536]}
+          sizes={isLogo ? '(min-width: 24rem) 24rem, 100vw' : '(min-width: 48rem) 48rem, 100vw'}
+          loading="eager"
           class:list={[
             'mb-8 w-full border border-line',
-            cover.square
+            isLogo
               ? 'aspect-square max-w-sm object-contain'
               : 'aspect-[3/2] max-w-3xl object-cover',
           ]}

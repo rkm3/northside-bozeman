@@ -8,5 +8,6 @@ instagram_handle: gangbusterspottery
 pinterest_handle: gangbusterspottery
 lat: 45.687424
 lng: -111.028207
+cover: ./gangbusters-pottery/cover.png
 ---
 Handmade porcelain in Bozeman by Ryan Mitchell. Since 2012, functional pieces for everyday use—each pot is handmade and unique.

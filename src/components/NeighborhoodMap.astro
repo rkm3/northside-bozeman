@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { getImage, Image } from 'astro:assets';
 import {
   boundaryCenter,
   northsideBoundaryRing,
@@ -14,7 +15,7 @@ import {
 } from '../data/place-categories';
 import { boundaryRingToPoints } from '../utils/boundary-svg';
 import LinkPill from './LinkPill.astro';
-import { getPlaceCover } from '../utils/place-image';
+import { isLogoCover } from '../utils/place-image';
 import { getWebsiteLabel } from '../utils/website-label';
 
 const places = (await getCollection('places')).sort((a, b) =>
@@ -30,11 +31,14 @@ const presentCategories = PLACE_CATEGORIES.filter((category) =>
   places.some((place) => place.data.categories.includes(category)),
 );
 
-const points = places.map((place) => {
+const points = await Promise.all(places.map(async (place) => {
   const primary = primaryCategory(place.data.categories);
   const marker = placeCategoryMarker[primary];
   const website = place.data.website;
-  const cover = getPlaceCover(place.id);
+  const cover = place.data.cover;
+  const isLogo = cover ? isLogoCover(cover) : false;
+  // Popup is 220px square for logos, ~320px wide for photos; sized for 2x screens.
+  const popupCover = cover ? await getImage({ src: cover, width: isLogo ? 440 : 640 }) : undefined;
   return {
     name: place.data.name,
     lat: place.data.lat,
@@ -46,13 +50,13 @@ const points = places.map((place) => {
     phone: place.data.phone,
     fill: marker.fill,
     stroke: marker.stroke,
-    coverSrc: cover?.src,
-    coverSquare: cover?.square ?? false,
+    coverSrc: popupCover?.src,
+    coverSquare: isLogo,
     placeHref: `/places/${place.id}`,
     website,
     websiteLabel: website ? getWebsiteLabel(website) : undefined,
   };
-});
+}));
 
 const mapConfig = JSON.stringify({
   key: apiKey,
@@ -197,7 +201,8 @@ const mapConfig = JSON.stringify({
   <ul id="place-list" class="mt-4 grid gap-4 sm:grid-cols-2">
     {
       places.map((place) => {
-        const cover = getPlaceCover(place.id);
+        const cover = place.data.cover;
+        const isLogo = cover ? isLogoCover(cover) : false;
         const { website, instagram_handle: instagramHandle, pinterest_handle: pinterestHandle } = place.data;
         return (
           <li class="h-full" data-categories={place.data.categories.join(',')}>
@@ -211,14 +216,14 @@ const mapConfig = JSON.stringify({
                 </span>
               )}
               {cover && (
-                <img
-                  src={cover.src}
+                <Image
+                  src={cover}
                   alt=""
-                  width="640"
-                  height={cover.square ? 640 : 427}
+                  widths={[480, 640, 960]}
+                  sizes="(min-width: 64rem) 30rem, (min-width: 40rem) 50vw, 100vw"
                   class:list={[
                     'w-full',
-                    cover.square ? 'aspect-square object-contain' : 'aspect-[3/2] object-cover',
+                    isLogo ? 'aspect-square object-contain' : 'aspect-[3/2] object-cover',
                   ]}
                 />
               )}
