@@ -1,0 +1,90 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { formatCategoryLabels } from '../../data/place-categories';
+import { getPlaceCover } from '../../utils/place-image';
+import { getWebsiteLabel } from '../../utils/website-label';
+
+export async function getStaticPaths() {
+  const places = await getCollection('places');
+  return places.map((place) => ({
+    params: { id: place.id },
+    props: { place },
+  }));
+}
+
+const { place } = Astro.props;
+const { Content } = await render(place);
+const cover = getPlaceCover(place.id);
+const website = place.data.website;
+---
+
+<BaseLayout
+  title={place.data.name}
+  description={`${place.data.name} on Bozeman’s Northside. ${place.data.address}`}
+>
+  <PageHeader kicker={formatCategoryLabels(place.data.categories)} title={place.data.name} />
+
+  <article class="mx-auto max-w-5xl px-4 py-6">
+    {
+      cover && (
+        <img
+          src={cover.src}
+          alt={place.data.name}
+          width={cover.square ? 640 : 1200}
+          height={cover.square ? 640 : 800}
+          class:list={[
+            'mb-8 w-full border border-line',
+            cover.square
+              ? 'aspect-square max-w-sm object-contain'
+              : 'aspect-[3/2] max-w-3xl object-cover',
+          ]}
+        />
+      )
+    }
+
+    <dl class="grid max-w-2xl gap-4 border border-line bg-cream p-5 sm:grid-cols-2">
+      <div>
+        <dt class="text-xs uppercase tracking-[0.16em] text-muted">Address</dt>
+        <dd class="mt-1">{place.data.address}</dd>
+      </div>
+      {
+        (website || place.data.phone) && (
+          <div>
+            <dt class="text-xs uppercase tracking-[0.16em] text-muted">Contact</dt>
+            {website && (
+              <dd class="mt-1">
+                <a
+                  class="font-semibold text-brick-deep underline-offset-4 hover:underline"
+                  href={website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {getWebsiteLabel(website)}
+                </a>
+              </dd>
+            )}
+            {place.data.phone && (
+              <dd class="mt-1">
+                <a class="text-brick-deep underline-offset-4 hover:underline" href={`tel:${place.data.phone.replace(/[^\d+]/g, '')}`}>
+                  {place.data.phone}
+                </a>
+              </dd>
+            )}
+          </div>
+        )
+      }
+    </dl>
+
+    <div class="prose-local mt-8 max-w-2xl text-lg leading-relaxed">
+      <Content />
+    </div>
+
+    <p class="mt-8">
+      <a class="text-sm font-semibold text-brick-deep underline-offset-4 hover:underline" href="/map">
+        Neighborhood map
+      </a>
+    </p>
+  </article>
+</BaseLayout>

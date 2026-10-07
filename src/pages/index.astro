@@ -1,6 +1,7 @@
 ---
 import { getCollection, getEntry, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import DistrictLockup from '../components/DistrictLockup.astro';
 import DistrictMark from '../components/DistrictMark.astro';
 import EventCard from '../components/EventCard.astro';
 
@@ -29,8 +30,8 @@ const featured = events.find((event) => event.data.featured) ?? events[0];
           <p class="text-xs uppercase tracking-[0.2em] text-brick-deep">Bozeman, Montana</p>
           <DistrictMark class="h-16 w-24 shrink-0 sm:h-20 sm:w-28" />
         </div>
-        <h1 class="mt-3 font-serif text-[2.75rem] font-medium uppercase leading-[0.92] tracking-wide sm:text-6xl">
-          Northside<br />Neighborhood
+        <h1 class="mt-4" aria-label="Northside Bozeman">
+          <DistrictLockup size="display" />
         </h1>
         <p class="mt-5 font-serif text-2xl italic leading-snug text-hop sm:text-3xl">
           From Lager to Legacy in Bozeman MT

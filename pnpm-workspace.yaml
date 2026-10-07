@@ -2,3 +2,13 @@ allowBuilds:
   esbuild: true
   sharp: true
   workerd: true
+
+# These versions were published within pnpm's default 1-day minimumReleaseAge.
+# Exact-version excludes only; anything newer still has to age out.
+minimumReleaseAgeExclude:
+  - "@astrojs/internal-helpers@0.12.0"
+  - "@astrojs/markdown-satteri@0.4.3"
+  - astro@7.3.6
+  - miniflare@5.20261006.0-alpha
+  - vite@8.3.3
+  - wrangler@4.148.0

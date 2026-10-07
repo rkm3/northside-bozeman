@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { PLACE_CATEGORIES } from './data/place-categories';
 
 const pages = defineCollection({
   loader: glob({ base: './src/content/pages', pattern: '**/*.md' }),
@@ -24,4 +25,17 @@ const events = defineCollection({
   }),
 });
 
-export const collections = { pages, events };
+const places = defineCollection({
+  loader: glob({ base: './src/content/places', pattern: '**/*.md' }),
+  schema: z.object({
+    name: z.string(),
+    categories: z.array(z.enum(PLACE_CATEGORIES)).min(1),
+    address: z.string(),
+    website: z.url().optional(),
+    phone: z.string().optional(),
+    lat: z.number(),
+    lng: z.number(),
+  }),
+});
+
+export const collections = { pages, events, places };

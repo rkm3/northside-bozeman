@@ -1,0 +1,40 @@
+---
+interface Props {
+  size?: 'compact' | 'display';
+  tone?: 'ink' | 'cream';
+}
+
+const { size = 'compact', tone = 'ink' } = Astro.props;
+const onCream = tone === 'cream';
+---
+
+<span class="inline-flex max-w-full flex-col">
+  <span
+    class:list={[
+      'font-serif font-medium leading-none tracking-[0.22em]',
+      onCream ? 'text-cream/80' : 'text-brick-deep',
+      size === 'display' ? 'text-sm sm:text-base' : 'text-xs',
+    ]}
+  >
+    NBD
+  </span>
+  <span
+    class:list={[
+      'font-serif font-medium leading-[0.95]',
+      onCream ? 'text-cream' : 'text-ink',
+      size === 'display' ? 'mt-2 text-5xl sm:text-7xl' : 'mt-1 text-2xl',
+    ]}
+  >
+    {
+      size === 'display' ? (
+        <>
+          Northside
+          <br />
+          Bozeman
+        </>
+      ) : (
+        'Northside Bozeman'
+      )
+    }
+  </span>
+</span>

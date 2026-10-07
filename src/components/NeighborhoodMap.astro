@@ -1,154 +1,245 @@
 ---
+import { getCollection } from 'astro:content';
 import {
   boundaryCenter,
   northsideBoundaryNote,
   northsideBoundaryRing,
   northsideBoundaryStyle,
 } from '../data/northside-boundary';
+import {
+  PLACE_CATEGORIES,
+  formatCategoryLabels,
+  placeCategoryLabels,
+  placeCategoryMarker,
+  primaryCategory,
+} from '../data/place-categories';
 import { boundaryRingToPoints } from '../utils/boundary-svg';
+import { getPlaceCover } from '../utils/place-image';
+import { getWebsiteLabel } from '../utils/website-label';
+
+const places = (await getCollection('places')).sort((a, b) =>
+  a.data.name.localeCompare(b.data.name),
+);
 
 const rawKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY;
 const trimmed = typeof rawKey === 'string' ? rawKey.trim() : '';
 const apiKey = /^[A-Za-z0-9_-]{10,}$/.test(trimmed) ? trimmed : '';
 const sketchPoints = boundaryRingToPoints(northsideBoundaryRing);
 
+const presentCategories = PLACE_CATEGORIES.filter((category) =>
+  places.some((place) => place.data.categories.includes(category)),
+);
+
+const points = places.map((place) => {
+  const primary = primaryCategory(place.data.categories);
+  const marker = placeCategoryMarker[primary];
+  const website = place.data.website;
+  const cover = getPlaceCover(place.id);
+  return {
+    name: place.data.name,
+    lat: place.data.lat,
+    lng: place.data.lng,
+    slug: place.id,
+    categories: [...place.data.categories],
+    categoryLabel: formatCategoryLabels(place.data.categories),
+    address: place.data.address,
+    phone: place.data.phone,
+    fill: marker.fill,
+    stroke: marker.stroke,
+    coverSrc: cover?.src,
+    coverSquare: cover?.square ?? false,
+    placeHref: `/places/${place.id}`,
+    website,
+    websiteLabel: website ? getWebsiteLabel(website) : undefined,
+  };
+});
+
 const mapConfig = JSON.stringify({
   key: apiKey,
+  points,
+  categoryLegend: presentCategories.map((id) => ({
+    id,
+    label: placeCategoryLabels[id],
+    fill: placeCategoryMarker[id].fill,
+  })),
   boundaryRing: northsideBoundaryRing,
   boundaryStyle: northsideBoundaryStyle,
   center: boundaryCenter(northsideBoundaryRing),
 }).replace(/</g, '\\u003c');
 ---
 
-<div>
-  {
-    apiKey ? (
-      <div
-        id="neighborhood-map"
-        class="h-80 border border-line bg-cream sm:h-[28rem]"
-        role="region"
-        aria-label="Northside neighborhood map"
-      />
-    ) : (
-      <div class="border border-dashed border-line bg-cream px-4 py-8 sm:px-8">
-        <div class="mx-auto max-w-md">
-          <svg viewBox="0 0 320 200" class="h-auto w-full" role="img" aria-label="Approximate Northside boundary sketch">
-            <rect width="320" height="200" fill="#f7f1e6" />
-            <polygon
-              points={sketchPoints}
-              fill={northsideBoundaryStyle.fill}
-              fill-opacity={northsideBoundaryStyle.fillOpacity}
-              stroke={northsideBoundaryStyle.stroke}
-              stroke-width="2"
-            />
-          </svg>
-          <p class="mt-4 font-serif text-xl">Map view unavailable</p>
-          <p class="mt-2 text-sm leading-relaxed text-muted">
-            Add <code class="bg-paper px-1 py-0.5 text-ink">PUBLIC_GOOGLE_MAPS_API_KEY</code> to a
-            <code class="bg-paper px-1 py-0.5 text-ink">.env</code> file and restart the dev server to
-            load Google Maps. The site works without a key. The sketch above is the same placeholder
-            outline the live map would draw.
-          </p>
-        </div>
-      </div>
-    )
+<style is:global>
+  #neighborhood-map .gm-style-iw-c,
+  #neighborhood-map .gm-style-iw-chr {
+    max-height: min(75vh, 520px) !important;
   }
+  #neighborhood-map .gm-style-iw-d {
+    max-height: min(72vh, 500px) !important;
+    overflow: auto !important;
+  }
+</style>
+<style>
+  .place-filter {
+    border: 1px solid var(--color-line);
+    background: var(--color-cream);
+    color: var(--color-ink);
+  }
+  .place-filter[aria-pressed='true'] {
+    border-color: var(--color-brick);
+    background: var(--color-brick);
+    color: var(--color-cream);
+  }
+  .legend-item.is-dim {
+    opacity: 0.35;
+  }
+</style>
 
-  <div class="mt-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-    <p class="flex items-center gap-2 text-sm text-ink">
-      <span
-        class="inline-block h-3 w-3 border border-brick bg-brick/40"
-        aria-hidden="true"></span>
-      Approximate Northside boundary
-    </p>
+<div>
+  <div
+    id="place-filters"
+    class="flex flex-wrap gap-2"
+    role="group"
+    aria-label="Place categories"
+  >
+    <button type="button" class="place-filter rounded-full px-3 py-1 text-sm" data-category="" aria-pressed="true">
+      All
+    </button>
+    {
+      presentCategories.map((category) => (
+        <button
+          type="button"
+          class="place-filter rounded-full px-3 py-1 text-sm"
+          data-category={category}
+          aria-pressed="false"
+        >
+          {placeCategoryLabels[category]}
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="mt-4">
+    {
+      apiKey ? (
+        <div
+          id="neighborhood-map"
+          class="h-96 border border-line bg-cream sm:h-[32rem]"
+          role="region"
+          aria-label="Northside neighborhood map"
+        />
+      ) : (
+        <div class="border border-dashed border-line bg-cream px-4 py-8 sm:px-8">
+          <div class="mx-auto max-w-md">
+            <svg viewBox="0 0 320 200" class="h-auto w-full" role="img" aria-label="Approximate Northside boundary sketch">
+              <rect width="320" height="200" fill="#f7f1e6" />
+              <polygon
+                points={sketchPoints}
+                fill={northsideBoundaryStyle.fill}
+                fill-opacity={northsideBoundaryStyle.fillOpacity}
+                stroke={northsideBoundaryStyle.stroke}
+                stroke-width="2"
+              />
+            </svg>
+            <p class="mt-4 font-serif text-xl">Map view unavailable</p>
+            <p class="mt-2 text-sm leading-relaxed text-muted">
+              Add <code class="bg-paper px-1 py-0.5 text-ink">PUBLIC_GOOGLE_MAPS_API_KEY</code> to a
+              <code class="bg-paper px-1 py-0.5 text-ink">.env</code> file and restart the dev server to
+              load Google Maps. The places below stay available either way.
+            </p>
+          </div>
+        </div>
+      )
+    }
+  </div>
+
+  <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+    <div id="place-legend" class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-ink" aria-label="Map pin categories">
+      {
+        presentCategories.map((category) => (
+          <span class="legend-item inline-flex items-center gap-1.5" data-legend-cat={category}>
+            <span
+              class="inline-block h-3 w-3 rounded-full border border-white"
+              style={{ backgroundColor: placeCategoryMarker[category].fill }}
+              aria-hidden="true"
+            />
+            {placeCategoryLabels[category]}
+          </span>
+        ))
+      }
+      <span class="inline-flex items-center gap-1.5">
+        <span class="inline-block h-3 w-3 border border-brick bg-brick/40" aria-hidden="true" />
+        Approximate Northside boundary
+      </span>
+      <span id="you-legend" class="hidden">
+        <span class="inline-flex items-center gap-1.5">
+          <span class="inline-block h-3 w-3 rounded-full border-2 border-gold bg-hop" aria-hidden="true" />
+          You
+        </span>
+      </span>
+    </div>
+    {
+      apiKey && (
+        <div class="shrink-0">
+          <button
+            id="show-me-on-map"
+            type="button"
+            class="border border-brick bg-cream px-3 py-2 text-sm font-semibold text-brick-deep hover:bg-brick hover:text-cream disabled:opacity-60"
+          >
+            Show me on the map
+          </button>
+          <p id="show-me-status" class="mt-2 max-w-xs text-sm text-muted" role="status" />
+        </div>
+      )
+    }
   </div>
   <p class="mt-2 max-w-3xl text-sm leading-relaxed text-muted">{northsideBoundaryNote}</p>
+
+  <h2 class="mt-10 font-serif text-2xl font-medium">Places on this map</h2>
+  <ul id="place-list" class="mt-4 grid gap-4 sm:grid-cols-2">
+    {
+      places.map((place) => {
+        const cover = getPlaceCover(place.id);
+        return (
+          <li class="h-full" data-categories={place.data.categories.join(',')}>
+            <a
+              href={`/places/${place.id}`}
+              class="flex h-full flex-col overflow-hidden border border-line bg-cream hover:border-brick"
+            >
+              {cover && (
+                <img
+                  src={cover.src}
+                  alt=""
+                  width="640"
+                  height={cover.square ? 640 : 427}
+                  class:list={[
+                    'w-full',
+                    cover.square ? 'aspect-square object-contain' : 'aspect-[3/2] object-cover',
+                  ]}
+                />
+              )}
+              <span class="flex flex-1 flex-col p-4">
+                <span class="text-xs uppercase tracking-[0.14em] text-brick-deep">
+                  {formatCategoryLabels(place.data.categories)}
+                </span>
+                <span class="mt-1 font-serif text-xl">{place.data.name}</span>
+                <span class="mt-1 text-sm text-muted">{place.data.address}</span>
+              </span>
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+  <p id="place-filter-empty" class="mt-6 hidden text-sm text-muted">No places in this category.</p>
 </div>
 
-{
-  apiKey && (
-    <>
-      <script type="application/json" id="northside-map-config" set:html={mapConfig} />
-      <script is:inline>
-        (function () {
-          var cfgEl = document.getElementById('northside-map-config');
-          var el = document.getElementById('neighborhood-map');
-          if (!cfgEl || !el) return;
-          var cfg = JSON.parse(cfgEl.textContent || '{}');
-          if (!cfg.key) return;
+<script type="application/json" id="northside-map-config" set:html={mapConfig} />
+<script>
+  import { mountNeighborhoodMap, type NeighborhoodMapConfig } from '../scripts/neighborhood-map';
 
-          function showMessage(title, body) {
-            el.textContent = '';
-            var wrap = document.createElement('div');
-            wrap.className = 'p-5 text-sm';
-            var heading = document.createElement('p');
-            heading.className = 'font-serif text-lg text-ink';
-            heading.textContent = title;
-            var copy = document.createElement('p');
-            copy.className = 'mt-2 leading-relaxed text-muted';
-            copy.textContent = body;
-            wrap.appendChild(heading);
-            wrap.appendChild(copy);
-            el.appendChild(wrap);
-          }
-
-          window.gm_authFailure = function () {
-            showMessage(
-              'Google Maps could not use this API key',
-              'In Google Cloud Console, enable the Maps JavaScript API and billing, and allow this site origin under HTTP referrer restrictions. The browser console has the exact error.'
-            );
-          };
-
-          var script = document.createElement('script');
-          script.async = true;
-          script.src =
-            'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(cfg.key);
-          script.onload = function () {
-            var g = window.google;
-            if (!g || !g.maps) {
-              showMessage('Map failed to load', 'Google Maps did not initialize. Check the API key and the browser console.');
-              return;
-            }
-            var map = new g.maps.Map(el, {
-              center: cfg.center || { lat: 45.687, lng: -111.031 },
-              zoom: 15,
-              mapTypeControl: false,
-              streetViewControl: false,
-              fullscreenControl: false,
-              styles: [
-                { featureType: 'all', elementType: 'all', stylers: [{ saturation: -100 }, { gamma: 0.98 }] },
-                { featureType: 'poi', stylers: [{ visibility: 'off' }] },
-                { featureType: 'transit', stylers: [{ visibility: 'off' }] },
-              ],
-            });
-            var style = cfg.boundaryStyle || {};
-            var polygon = new g.maps.Polygon({
-              paths: cfg.boundaryRing,
-              strokeColor: style.stroke || '#8d3b28',
-              strokeOpacity: style.strokeOpacity == null ? 0.95 : style.strokeOpacity,
-              strokeWeight: 2,
-              fillColor: style.fill || '#c4784a',
-              fillOpacity: style.fillOpacity == null ? 0.38 : style.fillOpacity,
-              clickable: false,
-            });
-            polygon.setMap(map);
-            if (cfg.boundaryRing && cfg.boundaryRing.length) {
-              var bounds = new g.maps.LatLngBounds();
-              cfg.boundaryRing.forEach(function (point) {
-                bounds.extend(point);
-              });
-              map.fitBounds(bounds, 48);
-            }
-          };
-          script.onerror = function () {
-            showMessage(
-              'Map failed to load',
-              'The Maps JavaScript API script did not load. Check the network connection and that the key is allowed to call that API.'
-            );
-          };
-          document.head.appendChild(script);
-        })();
-      </script>
-    </>
-  )
-}
+  const configElement = document.getElementById('northside-map-config');
+  if (configElement?.textContent) {
+    const config = JSON.parse(configElement.textContent) as NeighborhoodMapConfig;
+    mountNeighborhoodMap(config);
+  }
+</script>

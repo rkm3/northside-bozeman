@@ -1,4 +1,6 @@
 ---
+import DistrictLockup from './DistrictLockup.astro';
+
 const path = Astro.url.pathname;
 
 const items = [
@@ -19,11 +21,8 @@ function isActive(href: string): boolean {
   <div
     class="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-end sm:justify-between"
   >
-    <a href="/" class="block">
-      <span class="font-serif text-2xl font-medium tracking-tight text-ink">Northside</span>
-      <span class="mt-0.5 block text-xs uppercase tracking-[0.18em] text-muted">
-        Bozeman · Historic Brewery District
-      </span>
+    <a href="/" class="block" aria-label="Northside Bozeman">
+      <DistrictLockup />
     </a>
     <nav aria-label="Primary">
       <ul class="flex flex-wrap gap-x-5 gap-y-2">
