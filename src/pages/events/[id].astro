@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import { formatEventDate, isPastEvent } from '../../utils/format-date';
+import { isImageFile } from '../../utils/events';
 
 export async function getStaticPaths() {
   const events = await getCollection('events');
@@ -15,6 +16,7 @@ export async function getStaticPaths() {
 const { event } = Astro.props;
 const { Content } = await render(event);
 const past = isPastEvent(event.data.date);
+const { artifacts } = event.data;
 ---
 
 <BaseLayout title={event.data.title} description={event.data.summary}>
@@ -40,6 +42,42 @@ const past = isPastEvent(event.data.date);
     <div class="prose-local mt-8 max-w-2xl text-lg leading-relaxed">
       <Content />
     </div>
+
+    {
+      artifacts.length > 0 && (
+        <section class="mt-12" aria-labelledby="artifacts">
+          <h2 id="artifacts" class="font-serif text-2xl font-medium tracking-tight">
+            {past ? 'From the archive' : 'Posters & maps'}
+          </h2>
+          <ul class="mt-6 grid items-start gap-6 sm:grid-cols-2 md:grid-cols-3">
+            {artifacts.map((artifact) => (
+              <li class="flex flex-col border border-line bg-surface">
+                {isImageFile(artifact.file) && (
+                  <a href={artifact.file}>
+                    <img
+                      src={artifact.file}
+                      alt={artifact.title}
+                      loading="lazy"
+                      class="h-auto w-full border-b border-line"
+                    />
+                  </a>
+                )}
+                <div class="p-4">
+                  <p class="text-xs uppercase tracking-[0.16em] text-olive">{artifact.kind}</p>
+                  <a
+                    class="mt-1 block font-semibold text-rust underline-offset-4 hover:underline"
+                    href={artifact.file}
+                  >
+                    {artifact.title}
+                  </a>
+                  {artifact.credit && <p class="mt-1 text-sm text-muted">{artifact.credit}</p>}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
 
     <p class="mt-8">
       <a class="text-sm font-semibold text-rust underline-offset-4 hover:underline" href="/events">

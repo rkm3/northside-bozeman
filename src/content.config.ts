@@ -3,6 +3,8 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { PLACE_CATEGORIES } from './data/place-categories';
 
+const EVENT_ARTIFACT_KINDS = ['poster', 'map', 'flyer', 'photo', 'other'] as const;
+
 const pages = defineCollection({
   loader: glob({ base: './src/content/pages', pattern: '**/*.md' }),
   schema: z.object({
@@ -22,6 +24,17 @@ const events = defineCollection({
     location: z.string(),
     summary: z.string(),
     featured: z.boolean().default(false),
+    // Files live in public/events/<event id>/ and are referenced as /events/<event id>/<file>.
+    artifacts: z
+      .array(
+        z.object({
+          kind: z.enum(EVENT_ARTIFACT_KINDS),
+          title: z.string(),
+          file: z.string().startsWith('/events/'),
+          credit: z.string().optional(),
+        }),
+      )
+      .default([]),
   }),
 });
 

@@ -3,6 +3,7 @@ import { getCollection, getEntry, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EventCard from '../components/EventCard.astro';
 import Logo from '../components/Logo.astro';
+import { pickSpotlightEvent } from '../utils/events';
 
 const district = await getEntry('pages', 'district');
 const districtContent = district ? await render(district) : null;
@@ -12,10 +13,7 @@ const about = (await getCollection('pages', ({ data }) => data.section === 'abou
   (a, b) => a.data.order - b.data.order,
 );
 
-const events = (await getCollection('events')).sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
-);
-const featured = events.find((event) => event.data.featured) ?? events[0];
+const featured = pickSpotlightEvent(await getCollection('events'));
 ---
 
 <BaseLayout
