@@ -1,4 +1,5 @@
 import { brandColors } from '../data/brand';
+import { loadGoogleMaps } from './load-google-maps';
 
 type LatLng = { lat: number; lng: number };
 
@@ -68,7 +69,6 @@ type MapsApi = {
 
 declare global {
   interface Window {
-    gm_authFailure?: () => void;
     google?: { maps: MapsApi };
   }
 }
@@ -251,26 +251,6 @@ function buildYouCard(message: string): HTMLElement {
   detail.style.color = brandColors.muted;
   card.append(title, detail);
   return card;
-}
-
-function loadMaps(key: string, onAuthFailure: () => void): Promise<void> {
-  window.gm_authFailure = onAuthFailure;
-  if (window.google?.maps) return Promise.resolve();
-  return new Promise((resolve, reject) => {
-    const existing = document.querySelector('script[data-northside-maps]');
-    if (existing) {
-      existing.addEventListener('load', () => resolve());
-      existing.addEventListener('error', () => reject(new Error('Maps script failed to load')));
-      return;
-    }
-    const script = document.createElement('script');
-    script.dataset.northsideMaps = '';
-    script.async = true;
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(key)}`;
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error('Maps script failed to load'));
-    document.head.appendChild(script);
-  });
 }
 
 function showMapMessage(mapElement: HTMLElement, title: string, body: string): void {
@@ -525,7 +505,7 @@ export function mountNeighborhoodMap(config: NeighborhoodMapConfig): void {
     );
   };
 
-  void loadMaps(config.key, failAuth)
+  void loadGoogleMaps(config.key, failAuth)
     .then(() => {
       if (mapFailed) return;
       const googleMaps = window.google?.maps;

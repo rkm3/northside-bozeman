@@ -18,15 +18,14 @@ import LinkPill from './LinkPill.astro';
 import { isLogoCover } from '../utils/place-image';
 import { omitPrivateFields } from '../utils/omit-private-fields';
 import { isListedPlace } from '../utils/place-status';
+import { getGoogleMapsApiKey } from '../utils/google-maps-key';
 import { getWebsiteLabel } from '../utils/website-label';
 
 const places = (await getCollection('places'))
   .filter(isListedPlace)
   .sort((a, b) => a.data.name.localeCompare(b.data.name));
 
-const rawKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY;
-const trimmed = typeof rawKey === 'string' ? rawKey.trim() : '';
-const apiKey = /^[A-Za-z0-9_-]{10,}$/.test(trimmed) ? trimmed : '';
+const apiKey = getGoogleMapsApiKey();
 const sketchPoints = boundaryRingToPoints(northsideBoundaryRing);
 
 const presentCategories = PLACE_CATEGORIES.filter((category) =>

@@ -1,0 +1,178 @@
+---
+import { getCollection } from 'astro:content';
+import {
+  boundaryCenter,
+  northsideBoundaryRing,
+  northsideBoundaryStyle,
+} from '../data/northside-boundary';
+import {
+  placeCategoryMarker,
+  primaryCategory,
+} from '../data/place-categories';
+import { createSvgProjection } from '../utils/boundary-svg';
+import { getGoogleMapsApiKey } from '../utils/google-maps-key';
+import { isListedPlace } from '../utils/place-status';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const places = (await getCollection('places'))
+  .filter(isListedPlace)
+  .sort((a, b) => a.data.name.localeCompare(b.data.name));
+
+const width = 400;
+const height = 320;
+const placePoints = places.map((place) => ({
+  lat: place.data.lat,
+  lng: place.data.lng,
+}));
+const projection = createSvgProjection(
+  [...northsideBoundaryRing, ...placePoints],
+  width,
+  height,
+  28,
+);
+const boundaryPoints = projection.ringToPoints(northsideBoundaryRing);
+
+const pins = places.map((place) => {
+  const marker = placeCategoryMarker[primaryCategory(place.data.categories)];
+  const { x, y } = projection.project({ lat: place.data.lat, lng: place.data.lng });
+  return {
+    x,
+    y,
+    lat: place.data.lat,
+    lng: place.data.lng,
+    fill: marker.fill,
+    stroke: marker.stroke,
+    name: place.data.name,
+  };
+});
+
+const apiKey = getGoogleMapsApiKey();
+const mapConfig = apiKey
+  ? JSON.stringify({
+      key: apiKey,
+      points: pins.map(({ lat, lng, fill, stroke }) => ({ lat, lng, fill, stroke })),
+      boundaryRing: northsideBoundaryRing,
+      boundaryStyle: northsideBoundaryStyle,
+      center: boundaryCenter(northsideBoundaryRing),
+    }).replace(/</g, '\\u003c')
+  : '';
+
+const placeCount = places.length;
+const ariaLabel =
+  placeCount === 1
+    ? 'Neighborhood map with 1 place — open the full map'
+    : `Neighborhood map with ${placeCount} places — open the full map`;
+---
+
+<div class:list={['minimap', className]}>
+  <a
+    href="/map"
+    class="minimap-link group relative block aspect-[5/4] overflow-hidden border border-line bg-surface outline-offset-4 transition-colors hover:border-rust focus-visible:outline focus-visible:outline-2 focus-visible:outline-rust"
+    aria-label={ariaLabel}
+  >
+    {
+      apiKey ? (
+        <div
+          id="northside-minimap"
+          class="pointer-events-none absolute inset-0"
+          aria-hidden="true"
+        />
+      ) : null
+    }
+    <svg
+      viewBox={`0 0 ${width} ${height}`}
+      class="absolute inset-0 h-full w-full"
+      role="img"
+      aria-hidden="true"
+      data-minimap-fallback
+    >
+      <rect width={width} height={height} fill="var(--color-surface)" />
+      <rect width={width} height={height} fill="var(--color-line)" fill-opacity="0.35" />
+      <g stroke="var(--color-muted)" stroke-opacity="0.18" stroke-width="1">
+        <line x1="0" y1="64" x2={width} y2="64" />
+        <line x1="0" y1="128" x2={width} y2="128" />
+        <line x1="0" y1="192" x2={width} y2="192" />
+        <line x1="0" y1="256" x2={width} y2="256" />
+        <line x1="80" y1="0" x2="80" y2={height} />
+        <line x1="160" y1="0" x2="160" y2={height} />
+        <line x1="240" y1="0" x2="240" y2={height} />
+        <line x1="320" y1="0" x2="320" y2={height} />
+      </g>
+      <polygon
+        points={boundaryPoints}
+        fill={northsideBoundaryStyle.fill}
+        fill-opacity={northsideBoundaryStyle.fillOpacity}
+        stroke={northsideBoundaryStyle.stroke}
+        stroke-width="2.5"
+        class="minimap-boundary"
+      />
+      {
+        pins.map((pin) => (
+          <circle
+            cx={pin.x.toFixed(1)}
+            cy={pin.y.toFixed(1)}
+            r="5"
+            fill={pin.fill}
+            stroke={pin.stroke}
+            stroke-width="1.5"
+            class="minimap-pin"
+          >
+            <title>{pin.name}</title>
+          </circle>
+        ))
+      }
+    </svg>
+  </a>
+  <a
+    href="/map"
+    class="mt-3 inline-flex bg-rust px-4 py-2.5 text-sm font-semibold text-surface transition-colors hover:bg-rust-deep"
+  >
+    Explore the neighborhood map
+  </a>
+  <p class="mt-2 text-sm text-muted">
+    {placeCount} {placeCount === 1 ? 'place' : 'places'} on the block
+  </p>
+</div>
+
+{
+  mapConfig && (
+    <>
+      <script type="application/json" id="northside-minimap-config" set:html={mapConfig} />
+      <script>
+        import { mountMiniMap, type MiniMapConfig } from '../scripts/mini-map';
+
+        const configElement = document.getElementById('northside-minimap-config');
+        if (configElement?.textContent) {
+          const config = JSON.parse(configElement.textContent) as MiniMapConfig;
+          mountMiniMap(config);
+        }
+      </script>
+    </>
+  )
+}
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    .minimap-pin {
+      transform-box: fill-box;
+      transform-origin: center;
+      transition: transform 180ms ease;
+    }
+    .minimap-link:hover .minimap-pin,
+    .minimap-link:focus-visible .minimap-pin {
+      transform: scale(1.2);
+    }
+    .minimap-boundary {
+      transition: fill-opacity 180ms ease;
+    }
+    .minimap-link:hover .minimap-boundary,
+    .minimap-link:focus-visible .minimap-boundary {
+      fill-opacity: 0.42;
+    }
+  }
+</style>

@@ -10,5 +10,6 @@ private_contacts:
     email: nancyruby@yogamotion.com
 lat: 45.6778088
 lng: -111.0407116
+status: archived
 ---
 Nancy Ruby’s YogaMotion studio at the Emerson Center—yoga, teacher training, and holistic education.

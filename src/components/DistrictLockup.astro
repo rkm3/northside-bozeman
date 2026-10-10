@@ -1,16 +1,20 @@
 ---
 interface Props {
   tone?: 'ink' | 'light';
+  /** `display` is for page heroes; default matches the site header. */
+  size?: 'default' | 'display';
 }
 
-const { tone = 'ink' } = Astro.props;
+const { tone = 'ink', size = 'default' } = Astro.props;
 const onDark = tone === 'light';
+const display = size === 'display';
 ---
 
 <span class="inline-flex max-w-full flex-col">
   <span
     class:list={[
-      'font-serif text-2xl font-semibold leading-[0.95]',
+      'font-serif font-semibold leading-[0.95]',
+      display ? 'text-4xl sm:text-5xl' : 'text-2xl',
       onDark ? 'text-surface' : 'text-rust',
     ]}
   >
@@ -18,7 +22,8 @@ const onDark = tone === 'light';
   </span>
   <span
     class:list={[
-      'mt-1.5 text-xs font-semibold uppercase leading-none tracking-[0.22em]',
+      'font-semibold uppercase leading-none tracking-[0.22em]',
+      display ? 'mt-2.5 text-sm' : 'mt-1.5 text-xs',
       onDark ? 'text-ochre' : 'text-olive',
     ]}
   >

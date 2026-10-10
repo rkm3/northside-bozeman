@@ -17,7 +17,7 @@ The dev server defaults to [http://localhost:4321](http://localhost:4321).
 
 ## Google Maps
 
-`/map` draws a polygon with the Maps JavaScript API. The site builds, and the map page still renders, when the key is missing: you get a sketch of the same outline and a short empty state.
+`/map` and the home-page mini-map draw with the Maps JavaScript API (same desaturated basemap, boundary, and pins). The site builds when the key is missing: you get a sketch of the same outline instead.
 
 Copy the example env file and add a key:
 
