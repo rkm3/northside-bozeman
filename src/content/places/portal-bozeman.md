@@ -3,6 +3,7 @@ name: PORTAL° Bozeman
 categories:
   - fitness-wellness
 address: 660 N Ida Ave, Bozeman, MT 59715
+google_place_id: ChIJXWXR_zpFRVMReZblfvq9GGE
 website: https://www.portalthermaculture.com/bozeman
 instagram_handle: portalthermaculture
 phone: (406) 600-4193

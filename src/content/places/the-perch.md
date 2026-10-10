@@ -3,6 +3,7 @@ name: The Perch
 categories:
   - retail
 address: 611 N Wallace Ave Unit 5, Bozeman, MT 59715
+google_place_id: ChIJrfpjHkJERVMRTrpQkNvecNU
 instagram_handle: theperch.bzn
 private_contacts:
   - name: elizabethsmall15@gmail.com

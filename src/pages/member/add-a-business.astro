@@ -33,7 +33,15 @@ const fields: {
     required: true,
     format: 'Full street address with suite or unit, city, state, and ZIP.',
     example: '724 N Wallace Ave Suite 3, Bozeman, MT 59715',
-    shows: 'Card, place page, map popup, Google Maps link',
+    shows: 'Card, place page, map popup',
+  },
+  {
+    name: 'google_place_id',
+    required: false,
+    format:
+      'Google Maps Place ID (starts with ChIJ). Opens the exact Business Profile. Look it up with `node --experimental-strip-types scripts/lookup-google-place-ids.ts`, or paste from Google’s Place ID Finder.',
+    example: 'ChIJx_4gNslFRVMRhnSy42kbbJQ',
+    shows: '“Open in Google Maps” on the place page; map card address link',
   },
   {
     name: 'lat / lng',
@@ -140,6 +148,7 @@ name: Gangbusters Pottery
 categories:
   - retail
 address: 724 N Wallace Ave Suite 3, Bozeman, MT 59715
+google_place_id: ChIJZ6Fb0mlERVMRxG6XTxj4chc
 website: https://www.gangbusterspottery.com/
 phone: (406) 555-0123
 email: hello@gangbusterspottery.com
@@ -157,6 +166,7 @@ Handmade porcelain by Ryan Mitchell. Since 2012, functional pieces for everyday 
 const checklist = [
   'Name, address, and at least one category',
   'Coordinates for the front door, checked on the map',
+  'google_place_id when you can find their Google listing',
   'Website, phone, email, and social handles, if they have them',
   'private_contacts for the members directory, if you have them',
   'A photo or square logo, with permission to use it',

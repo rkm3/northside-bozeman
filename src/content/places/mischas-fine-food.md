@@ -3,6 +3,7 @@ name: "Mischa's Fine Food and Natural Wine"
 categories:
   - food-drink
 address: "620 E Cottonwood St #102A, Bozeman, MT 59715"
+google_place_id: ChIJ-SCIxb1FRVMRrwN19dZPnMQ
 website: https://mischasbozeman.com/
 instagram_handle: mischasbozeman
 private_contacts:

@@ -3,6 +3,7 @@ name: Misco Mill
 categories:
   - retail
 address: 700 N Wallace Ave, Bozeman, MT 59715
+google_place_id: ChIJ8aUkKGhERVMRkhBsEIEX59c
 website: https://www.miscomill.com/
 instagram_handle: miscomill
 private_contacts:

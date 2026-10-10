@@ -3,6 +3,7 @@ name: Grotto Meats
 categories:
   - food-drink
 address: 611 N Wallace Ave Unit 4, Bozeman, MT 59715
+google_place_id: ChIJtcrbxV1FRVMRFJ2V7mRoerg
 phone: (406) 548-1438
 email: grottomeats@gmail.com
 instagram_handle: grottomeats

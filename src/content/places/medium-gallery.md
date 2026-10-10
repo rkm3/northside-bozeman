@@ -3,6 +3,7 @@ name: Medium Gallery
 categories:
   - arts-culture
 address: 618 N Wallace Ave, Bozeman, MT 59715
+google_place_id: ChIJHcrwQk9FRVMRsfZf7hUvfSI
 website: https://mediummt.com/
 email: medium.montana@gmail.com
 phone: (406) 580-4890

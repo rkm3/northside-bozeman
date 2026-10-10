@@ -3,6 +3,7 @@ name: "Fink's Deli"
 categories:
   - food-drink
 address: 600 N Wallace Ave Suite 4, Bozeman, MT 59715
+google_place_id: ChIJ42EbVPFFRVMRXsu51NYPhYY
 website: https://www.finksdeli.com/
 instagram_handle: finksdeli
 private_contacts:

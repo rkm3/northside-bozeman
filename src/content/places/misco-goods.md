@@ -3,6 +3,7 @@ name: Misco Goods
 categories:
   - retail
 address: 700 N Wallace Ave Ste. B, Bozeman, MT 59715
+google_place_id: ChIJVwl7rAtFRVMRF1LR79LXGec
 website: https://www.miscogoods.com/
 instagram_handle: misco_goods
 private_contacts:

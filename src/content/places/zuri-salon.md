@@ -3,6 +3,7 @@ name: Zuri Salon
 categories:
   - services
 address: 620 E Cottonwood St Unit 101, Bozeman, MT 59715
+google_place_id: ChIJ91IRXVJERVMR06S6t4fct0Y
 website: https://www.zurisalonbozeman.com/
 instagram_handle: zurisalon
 private_contacts:

@@ -7,6 +7,7 @@ import LinkPill from '../../components/LinkPill.astro';
 import { formatCategoryLabels } from '../../data/place-categories';
 import { isLogoCover } from '../../utils/place-image';
 import { isPlacePageBuilt } from '../../utils/place-status';
+import { googleMapsPlaceUrl } from '../../utils/google-maps-url';
 import { getWebsiteLabel } from '../../utils/website-label';
 
 export async function getStaticPaths() {
@@ -35,6 +36,11 @@ const kicker = isArchived
   : isDraft
     ? `Draft · ${formatCategoryLabels(place.data.categories)}`
     : formatCategoryLabels(place.data.categories);
+const mapsUrl = googleMapsPlaceUrl({
+  name: place.data.name,
+  address: place.data.address,
+  googlePlaceId: place.data.google_place_id,
+});
 ---
 
 <BaseLayout
@@ -99,6 +105,21 @@ const kicker = isArchived
       <div>
         <dt class="text-xs uppercase tracking-[0.16em] text-muted">Address</dt>
         <dd class="mt-1">{place.data.address}</dd>
+        <dd class="mt-3">
+          <a
+            class="inline-flex items-center gap-2 text-sm font-semibold text-rust underline-offset-4 hover:underline"
+            href={mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path
+                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"
+              ></path>
+            </svg>
+            Open in Google Maps
+          </a>
+        </dd>
       </div>
       {
         (website || place.data.phone || place.data.email) && (

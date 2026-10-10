@@ -3,6 +3,7 @@ name: Beringia House
 categories:
   - retail
 address: 610 N Wallace Ave, Bozeman, MT 59715
+google_place_id: ChIJx_4gNslFRVMRhnSy42kbbJQ
 website: https://beringia.world
 email: bozeman@beringia.world
 instagram_handle:

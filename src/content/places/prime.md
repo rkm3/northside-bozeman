@@ -3,6 +3,7 @@ name: PRIME
 categories:
   - services
 address: 810 N Wallace Ave Suite D, Bozeman, MT 59715
+google_place_id: ChIJAaOTxWlERVMRB16PoRsbcvU
 website: https://primebzn.com/
 instagram_handle: primebzn
 phone: (406) 551-1380

@@ -3,6 +3,7 @@ name: Gangbusters Pottery
 categories:
   - retail
 address: 724 N Wallace Ave Suite 3, Bozeman, MT 59715
+google_place_id: ChIJZ6Fb0mlERVMRxG6XTxj4chc
 website: https://www.gangbusterspottery.com/
 instagram_handle: gangbusterspottery
 pinterest_handle: gangbusterspottery

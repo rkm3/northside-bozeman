@@ -3,6 +3,7 @@ name: Theory Hair Salon
 categories:
   - services
 address: 802 N Wallace Ave Suite A, Bozeman, MT 59715
+google_place_id: ChIJAaOTxWlERVMRbCNibqbd3tQ
 website: https://www.theoryhair.com/
 phone: (406) 586-3198
 instagram_handle: theoryhairsalon

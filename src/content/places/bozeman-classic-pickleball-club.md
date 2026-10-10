@@ -3,6 +3,7 @@ name: Bozeman Classic Pickleball Club
 categories:
   - fitness-wellness
 address: 707 E Peach St Suite C, Bozeman, MT 59715
+google_place_id: ChIJfXDZS-NFRVMRQpIbrQOiwDI
 website: https://www.bozemanpickleballclub.com/
 instagram_handle: bozemanclassic
 private_contacts:

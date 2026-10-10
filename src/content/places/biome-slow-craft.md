@@ -3,6 +3,7 @@ name: Biome Slow Craft
 categories:
   - retail
 address: 609 E Peach St, Bozeman, MT 59715
+google_place_id: ChIJtXfnHzlFRVMR2SnfJ_II9vo
 website: https://www.biomeslowcraft.com/
 instagram_handle: biome.slowcraft
 private_contacts:

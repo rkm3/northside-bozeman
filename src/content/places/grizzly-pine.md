@@ -3,6 +3,7 @@ name: Grizzly Pine
 categories:
   - retail
 address: 512 N Broadway Ave, Bozeman, MT 59715
+google_place_id: ChIJA9rAzWdERVMRdW74KIB5Gz0
 website: https://grizzlypine.com/
 instagram_handle: grizzlypinemt
 phone: (406) 595-0577

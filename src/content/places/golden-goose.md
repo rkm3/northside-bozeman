@@ -3,6 +3,7 @@ name: Golden Goose
 categories:
   - food-drink
 address: 611 N Wallace Ave, Bozeman, MT 59715
+google_place_id: ChIJ5dw3hb5FRVMRq0a9pM-BKow
 website: https://www.goldengoosefoodtruck.com/
 instagram_handle: golden_goose_streeteats
 private_contacts:

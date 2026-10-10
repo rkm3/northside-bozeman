@@ -3,6 +3,7 @@ name: Wildlands
 categories:
   - services
 address: 600 N Wallace Ave, Bozeman, MT 59715
+google_place_id: ChIJuwrt_J9FRVMReu8T5ASw0vI
 website: https://www.wildlandsbozeman.com/
 phone: (406) 995-2404
 instagram_handle:

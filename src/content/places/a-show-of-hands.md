@@ -3,6 +3,7 @@ name: A Show of Hands
 categories:
   - retail
 address: 521 E Peach St Suite B, Bozeman, MT 59715
+google_place_id: ChIJ78vCQf9FRVMRtnysBapznwU
 website: https://showofhandsmt.com/
 instagram_handle: showofhandsmt
 private_contacts:

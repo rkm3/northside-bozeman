@@ -3,6 +3,7 @@ name: Echo Arts
 categories:
   - arts-culture
 address: 615 E Peach St Suite C, Bozeman, MT 59715
+google_place_id: ChIJ3fRSfAtFRVMRQIzozNdKRH0
 website: https://www.echoarts.net/
 instagram_handle: workwithecho
 private_contacts:

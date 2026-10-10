@@ -78,6 +78,7 @@ status: live
 categories:
   - food-drink
 address: 611 N Wallace Ave Unit 4, Bozeman, MT 59715
+google_place_id: ChIJtcrbxV1FRVMRFJ2V7mRoerg
 phone: (406) 548-1438
 email: grottomeats@gmail.com
 private_contacts:
@@ -100,6 +101,11 @@ A short description of the business, in plain sentences.
     `a-show-of-hands`). Member contacts still lists archived rows in their own table.
 - `categories`: one or more of the ids in `src/data/place-categories.ts`. The **first** category
   sets the pin color.
+- `google_place_id`: optional Google Maps Place ID (`ChIJ…`). Powers “Open in Google Maps” on the
+  place page (and the address link on map cards). Without it, those links fall back to an address
+  search. Batch-fill with
+  `node --experimental-strip-types scripts/lookup-google-place-ids.ts` (uses
+  `PUBLIC_GOOGLE_MAPS_API_KEY`; review any `CHECK` rows).
 - `website`, `phone`, `email`, and social handles are optional. Social handles are bare (no `@`):
   `instagram_handle` (primary; string or YAML list), plus optional `threads_handle` and
   `pinterest_handle`. Cap at those three — not a full social matrix. Prefer Threads/Pinterest

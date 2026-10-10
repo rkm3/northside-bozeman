@@ -3,6 +3,7 @@ name: Physical Space
 categories:
   - services
 address: 615 E Peach St Suite C, Bozeman, MT 59715
+google_place_id: ChIJjxKXN85FRVMRz49oNSBDHjc
 website: https://www.physicalspace.co/
 instagram_handle: physicalspace.co
 phone: (406) 404-6638

@@ -3,6 +3,7 @@ name: Hush
 categories:
   - retail
 address: 611 N Wallace Ave Unit B, Bozeman, MT 59715
+google_place_id: ChIJj59zTQZFRVMRyyNge2uazTU
 website: https://hushmt.com/
 phone: (406) 551-3717
 email: info@quakingaspenmt.com

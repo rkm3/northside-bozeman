@@ -4,6 +4,7 @@ status: archived
 categories:
   - retail
 address: 521 E Peach St Suite A, Bozeman, MT 59715
+google_place_id: ChIJX5EUO_RFRVMRgtrO_gwzonI
 website: https://royalroadbookstore.com/
 email: alice@royalroadbookstore.com
 instagram_handle: royalroadbookstore

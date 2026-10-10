@@ -3,6 +3,7 @@ name: Green Seam Designs
 categories:
   - services
 address: 724 N Wallace Ave, Bozeman, MT 59715
+google_place_id: ChIJk6dq0mlERVMRm7iG7oxGCBo
 website: https://www.greenseamdesigns.com/
 instagram_handle: greenseamdesigns
 private_contacts:

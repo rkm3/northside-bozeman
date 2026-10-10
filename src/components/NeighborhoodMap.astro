@@ -19,6 +19,7 @@ import { isLogoCover } from '../utils/place-image';
 import { omitPrivateFields } from '../utils/omit-private-fields';
 import { isListedPlace } from '../utils/place-status';
 import { getGoogleMapsApiKey } from '../utils/google-maps-key';
+import { googleMapsPlaceUrl } from '../utils/google-maps-url';
 import { getWebsiteLabel } from '../utils/website-label';
 
 const places = (await getCollection('places'))
@@ -149,30 +150,7 @@ const mapConfig = JSON.stringify({
 </style>
 
 <div>
-  <div
-    id="place-filters"
-    class="flex flex-wrap gap-2"
-    role="group"
-    aria-label="Place categories"
-  >
-    <button type="button" class="place-filter rounded-full px-3 py-1 text-sm" data-category="" aria-pressed="true">
-      All
-    </button>
-    {
-      presentCategories.map((category) => (
-        <button
-          type="button"
-          class="place-filter rounded-full px-3 py-1 text-sm"
-          data-category={category}
-          aria-pressed="false"
-        >
-          {placeCategoryLabels[category]}
-        </button>
-      ))
-    }
-  </div>
-
-  <div class="mt-4">
+  <div>
     {
       apiKey ? (
         <div
@@ -203,6 +181,29 @@ const mapConfig = JSON.stringify({
           </div>
         </div>
       )
+    }
+  </div>
+
+  <div
+    id="place-filters"
+    class="mt-4 flex flex-wrap gap-2"
+    role="group"
+    aria-label="Place categories"
+  >
+    <button type="button" class="place-filter rounded-full px-3 py-1 text-sm" data-category="" aria-pressed="true">
+      All
+    </button>
+    {
+      presentCategories.map((category) => (
+        <button
+          type="button"
+          class="place-filter rounded-full px-3 py-1 text-sm"
+          data-category={category}
+          aria-pressed="false"
+        >
+          {placeCategoryLabels[category]}
+        </button>
+      ))
     }
   </div>
 
@@ -323,7 +324,11 @@ const mapConfig = JSON.stringify({
                   {place.data.name}
                 </a>
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.data.address)}`}
+                  href={googleMapsPlaceUrl({
+                    name: place.data.name,
+                    address: place.data.address,
+                    googlePlaceId: place.data.google_place_id,
+                  })}
                   target="_blank"
                   rel="noopener noreferrer"
                   data-map-focus={place.id}

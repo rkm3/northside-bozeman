@@ -3,6 +3,7 @@ name: "Jill's Thrift"
 categories:
   - retail
 address: 611 N Wallace Ave Basement, Bozeman, MT 59715
+google_place_id: ChIJRYghjfJFRVMRBrOb_jEDwz8
 instagram_handle: jillsthrift
 private_contacts:
   - name: Jill Reynolds

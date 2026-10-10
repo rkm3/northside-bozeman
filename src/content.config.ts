@@ -50,6 +50,8 @@ const places = defineCollection({
     successor: z.string().optional(),
     categories: z.array(z.enum(PLACE_CATEGORIES)).min(1),
     address: z.string(),
+    // Google Maps Place ID (ChIJ…). Opens the exact listing; optional until looked up.
+    google_place_id: z.string().regex(/^ChIJ[\w-]+$/).optional(),
     website: z.url().optional(),
     phone: z.string().optional(),
     email: z.email().optional(),

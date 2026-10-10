@@ -3,6 +3,7 @@ name: Sanctuary Interior Design
 categories:
   - services
 address: 401 E Peach St, Bozeman, MT 59715
+google_place_id: ChIJF82tuglERVMR-QgZFHmZE7M
 website: https://www.sanctuary-interiordesign.com/
 email: sophia@sanctuary-interiordesign.com
 phone: (406) 579-1632
