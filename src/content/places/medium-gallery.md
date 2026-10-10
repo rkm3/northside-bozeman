@@ -7,6 +7,7 @@ website: https://mediummt.com/
 email: medium.montana@gmail.com
 phone: (406) 580-4890
 instagram_handle: medium.gallery.bzn
+threads_handle: medium.gallery.bzn
 lat: 45.686411
 lng: -111.027706
 ---

@@ -5,6 +5,7 @@ categories:
 address: 601 E Cottonwood St, Bozeman, MT 59715
 website: https://therefillerysupply.co/
 instagram_handle: therefillerysupplyco
+pinterest_handle: TheRefillerySupplyCo
 private_contacts:
   - name: Sarah Sloan
     email: refillerysupplyco@gmail.com

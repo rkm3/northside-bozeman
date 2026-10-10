@@ -7,6 +7,7 @@ website: https://www.sanctuary-interiordesign.com/
 email: sophia@sanctuary-interiordesign.com
 phone: (406) 579-1632
 instagram_handle: sanctuaryinteriordesignmt
+pinterest_handle: SanctuaryMT
 private_contacts:
   - name: Sophia Cok
     email: sophia@sanctuary-interiordesign.com
