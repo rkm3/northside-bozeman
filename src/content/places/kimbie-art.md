@@ -2,7 +2,7 @@
 name: Kimbie Art
 categories:
   - arts-culture
-address: 700 N Wallace Ave, Bozeman, MT 59715
+address: 700 N Wallace Ave Suite 4, Bozeman, MT 59715
 website: https://kimbieart.com/
 lat: 45.687125
 lng: -111.027912

@@ -1,36 +1,38 @@
 # Group organization & coordination
 
 How the Northside Bozeman Business Group talks, keeps track of members, keeps the website up to
-date, and makes decisions about the brand.
+date, and makes decisions about the brand. Public contacts, social handles, and what gets
+announced where live in the [communications plan](comms-plan.md).
 
 > **Status: proposal.** Items marked **Decide** still need a call from the group.
 
 ---
 
-## 1. Setting up the members' Google Group
+## 1. Members' Google Group
 
 One Google Group is the group's mailing list, discussion space, and access list. Members join
 once, and that membership also gives them access to the member directory and any shared files.
 
-### Setup (one organizer, once)
+| | |
+| --- | --- |
+| **Email** | `northside-bozeman-member@googlegroups.com` |
+| **Web** | [groups.google.com/g/northside-bozeman-member](https://groups.google.com/g/northside-bozeman-member) |
 
-1. Go to [groups.google.com](https://groups.google.com) and choose **Create group**.
-2. **Name:** Northside Bozeman Business Group. **Email:** something like
-   `northside-bozeman@googlegroups.com`. If the group later gets a Google Workspace domain, the
-   address can be `members@northsidebozeman.com` instead.
-3. Suggested privacy settings:
+If the group later gets a Google Workspace domain, a cleaner alias like
+`members@northsidebozeman.com` can point at the same group.
 
-   | Setting | Value | Why |
-   | --- | --- | --- |
-   | Who can search for the group | Group members | Keeps it off public search |
-   | Who can join | Anyone can ask | An organizer approves each request |
-   | Who can view conversations | Group members | Discussions stay inside the group |
-   | Who can post | Group members | No outside spam |
-   | Who can view members | Group members | Members can see each other; the public can't |
+### Privacy settings to keep
 
-4. Add at least **two owners**, so the group never depends on one person's account.
-5. Invite the first members by email, one contact per business to start. More people can be
-   added later.
+| Setting | Value | Why |
+| --- | --- | --- |
+| Who can search for the group | Group members | Keeps it off public search |
+| Who can join | Anyone can ask | An organizer approves each request |
+| Who can view conversations | Group members | Discussions stay inside the group |
+| Who can post | Group members | No outside spam |
+| Who can view members | Group members | Members can see each other; the public can't |
+
+Keep at least **two owners**, so the group never depends on one person's account. Invite members
+by email, one contact per business to start; more people can be added later.
 
 ### How it gets used
 

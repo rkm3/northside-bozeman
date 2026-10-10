@@ -11,6 +11,7 @@ export type MapPoint = {
   categoryLabel: string;
   address: string;
   phone?: string;
+  email?: string;
   fill: string;
   stroke: string;
   coverSrc?: string;
@@ -220,6 +221,14 @@ function buildPlaceCard(point: MapPoint): HTMLElement {
     phone.style.fontSize = '13px';
     phone.appendChild(linkLine(`tel:${point.phone.replace(/[^\d+]/g, '')}`, point.phone));
     card.appendChild(phone);
+  }
+
+  if (point.email) {
+    const email = document.createElement('p');
+    email.style.margin = '4px 0 0';
+    email.style.fontSize = '13px';
+    email.appendChild(linkLine(`mailto:${point.email}`, point.email));
+    card.appendChild(email);
   }
 
   return card;

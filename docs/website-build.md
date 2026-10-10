@@ -73,8 +73,9 @@ name: Grotto Meats
 categories:
   - food-drink
 address: 611 N Wallace Ave Unit 4, Bozeman, MT 59715
-website: https://www.instagram.com/grottomeats/
 phone: (406) 548-1438
+email: grottomeats@gmail.com
+instagram_handle: grottomeats
 lat: 45.686193
 lng: -111.029266
 ---
@@ -83,7 +84,8 @@ A short description of the business, in plain sentences.
 
 - `categories`: one or more of the ids in `src/data/place-categories.ts`. The **first** category
   sets the pin color.
-- `website` and `phone` are optional.
+- `website`, `phone`, `email`, and social handles are optional. `instagram_handle` is a bare
+  handle (no `@`), or a YAML list when a business has more than one.
 - `lat` / `lng` place the pin. The maintainer usually looks these up from the address.
 - `cover` is an optional photo in the business's own folder, next to its listing file (for example
   `cover: ./grotto-meats/cover.webp` points to `src/content/places/grotto-meats/cover.webp`). The
@@ -135,7 +137,13 @@ artifacts:
 
 ### Current strolls
 
-- **2026 Summer Stroll**, Wednesday, July 29. Past. Poster, map, and photos haven't been added yet.
+- **2018 Summer Stroll**, Friday, June 1. Past. Poster/map photo from `@bozemannorthsidebuzz`
+  (designed by Engine 8 and Jasmine Lilly Creative).
+- **2024 Holiday Stroll**, Wednesday, December 4. Past. Poster from
+  [Gangbusters Pottery](https://www.gangbusterspottery.com/upcoming-events/northside-stroll).
+- **2025 Holiday Stroll**, Wednesday, December 10. Past. Poster & map from
+  [Gangbusters Pottery](https://www.gangbusterspottery.com/upcoming-events/northside-stroll-1).
+- **2026 Summer Stroll**, Wednesday, July 29. Past. Poster & map added; more photos welcome.
 - **2026 Winter Stroll**, Wednesday, December 9. Upcoming and featured. Times, participating
   businesses, and the map are still to come.
 
@@ -150,6 +158,9 @@ Decisions and loose ends that came up while building the draft:
   tonight" and highlight those pins on the map.
 - **Real contact email.** `/contact` uses a placeholder (`hello@northsidebozeman.com`). Swap it
   for the group's real inbox, or the Google Group address, before launch.
+- **Official Instagram.** Hold footer / carousel links until the account is active enough. Details
+  and the legacy `@bozemannorthsidebuzz` note live in the
+  [communications plan](comms-plan.md#social-media).
 - **Custom domain.** The site is only on its workers.dev URL for now.
 - **Vector logos.** The logos are web-only rasters. Get vector masters before anything is printed
   (see [`DESIGN.md`](../DESIGN.md)).

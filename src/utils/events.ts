@@ -20,6 +20,17 @@ export function pickSpotlightEvent(events: Event[], now = new Date()): Event | u
   return upcoming.find((event) => event.data.featured) ?? upcoming[0] ?? past[0];
 }
 
+/** Summer and Winter Stroll event files are named `<year>-<season>-stroll`. */
+export function isStrollEvent(event: Event): boolean {
+  return /(?:^|-)stroll$/.test(event.id);
+}
+
+/** Soonest upcoming stroll, if any — used by the stable `/northside-stroll` URL. */
+export function pickNextStrollEvent(events: Event[], now = new Date()): Event | undefined {
+  const { upcoming } = splitEvents(events, now);
+  return upcoming.find(isStrollEvent);
+}
+
 const IMAGE_EXTENSIONS = /\.(avif|gif|jpe?g|png|webp)$/i;
 
 export function isImageFile(path: string): boolean {

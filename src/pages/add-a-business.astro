@@ -57,11 +57,18 @@ const fields: {
     shows: 'Place page, map popup (tap to call)',
   },
   {
+    name: 'email',
+    required: false,
+    format: 'A public inbox, not a personal address.',
+    example: 'hello@gangbusterspottery.com',
+    shows: 'Place page, map popup (opens mail)',
+  },
+  {
     name: 'instagram_handle',
     required: false,
-    format: 'The handle only: no @, no link.',
+    format: 'The handle only: no @, no link. Use a YAML list when a business has more than one.',
     example: 'gangbusterspottery',
-    shows: 'Instagram pill',
+    shows: 'Instagram pill(s)',
   },
   {
     name: 'pinterest_handle',
@@ -105,6 +112,7 @@ categories:
 address: 724 N Wallace Ave Suite 3, Bozeman, MT 59715
 website: https://www.gangbusterspottery.com/
 phone: (406) 555-0123
+email: hello@gangbusterspottery.com
 instagram_handle: gangbusterspottery
 pinterest_handle: gangbusterspottery
 lat: 45.687424
@@ -115,7 +123,7 @@ Handmade porcelain by Ryan Mitchell. Since 2012, functional pieces for everyday 
 const checklist = [
   'Name, address, and at least one category',
   'Coordinates for the front door, checked on the map',
-  'Website, phone, and social handles, if they have them',
+  'Website, phone, email, and social handles, if they have them',
   'A photo or square logo, with permission to use it',
   'One to three sentences about what they do',
   'The owner has seen the listing and is happy with it',

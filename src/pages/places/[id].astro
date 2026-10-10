@@ -21,7 +21,8 @@ const { Content } = await render(place);
 const cover = place.data.cover;
 const isLogo = cover ? isLogoCover(cover) : false;
 const website = place.data.website;
-const { instagram_handle: instagramHandle, pinterest_handle: pinterestHandle } = place.data;
+const instagramHandles = place.data.instagram_handle ?? [];
+const pinterestHandle = place.data.pinterest_handle;
 ---
 
 <BaseLayout
@@ -55,7 +56,7 @@ const { instagram_handle: instagramHandle, pinterest_handle: pinterestHandle } =
         <dd class="mt-1">{place.data.address}</dd>
       </div>
       {
-        (website || place.data.phone) && (
+        (website || place.data.phone || place.data.email) && (
           <div>
             <dt class="text-xs uppercase tracking-[0.16em] text-muted">Contact</dt>
             {website && (
@@ -77,15 +78,24 @@ const { instagram_handle: instagramHandle, pinterest_handle: pinterestHandle } =
                 </a>
               </dd>
             )}
+            {place.data.email && (
+              <dd class="mt-1">
+                <a class="text-rust underline-offset-4 hover:underline" href={`mailto:${place.data.email}`}>
+                  {place.data.email}
+                </a>
+              </dd>
+            )}
           </div>
         )
       }
       {
-        (instagramHandle || pinterestHandle) && (
+        (instagramHandles.length > 0 || pinterestHandle) && (
           <div class="sm:col-span-2">
             <dt class="text-xs uppercase tracking-[0.16em] text-muted">Social</dt>
             <dd class="mt-2 flex flex-wrap gap-2">
-              {instagramHandle && <LinkPill kind="instagram" handle={instagramHandle} />}
+              {instagramHandles.map((handle) => (
+                <LinkPill kind="instagram" handle={handle} />
+              ))}
               {pinterestHandle && <LinkPill kind="pinterest" handle={pinterestHandle} />}
             </dd>
           </div>

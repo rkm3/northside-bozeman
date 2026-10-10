@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { formatEventDate } from '../utils/format-date';
+import { isStrollEvent, pickNextStrollEvent, splitEvents } from '../utils/events';
+
+const events = await getCollection('events');
+const nextStroll = pickNextStrollEvent(events);
+
+if (nextStroll) {
+  return Astro.redirect(`/events/${nextStroll.id}`, 302);
+}
+
+const latestStroll = splitEvents(events).past.find(isStrollEvent);
+---
+
+<BaseLayout
+  title="Northside Stroll"
+  description="The Northside Stroll is the neighborhood’s twice-yearly gathering in Bozeman’s Historic Brewery District. See upcoming and past events."
+>
+  <PageHeader
+    kicker="Neighborhood gathering"
+    title="Northside Stroll"
+    lede="Twice a year the Historic Brewery District opens its doors for an evening walk among the shops and studios — Summer Stroll in July, Winter Stroll in December."
+  />
+
+  <div class="mx-auto max-w-5xl px-4 py-8">
+    <div class="max-w-2xl">
+      {
+        latestStroll ? (
+          <p class="text-lg leading-relaxed">
+            Thanks for coming out to the{' '}
+            <a
+              class="font-semibold text-rust underline-offset-4 hover:underline"
+              href={`/events/${latestStroll.id}`}
+            >
+              {latestStroll.data.title}
+            </a>
+            {' '}on {formatEventDate(latestStroll.data.date)}. The next date isn’t posted yet —
+            check back here when it is, or browse the archive of past strolls.
+          </p>
+        ) : (
+          <p class="text-lg leading-relaxed">
+            The next Stroll isn’t on the calendar yet. When a date is set, this page will take you
+            straight there.
+          </p>
+        )
+      }
+      <p class="mt-6">
+        <a
+          class="text-sm font-semibold text-rust underline-offset-4 hover:underline"
+          href="/events"
+        >
+          See all events
+        </a>
+      </p>
+    </div>
+  </div>
+</BaseLayout>

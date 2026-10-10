@@ -4,6 +4,7 @@ categories:
   - food-drink
 address: 624 N Wallace Ave, Bozeman, MT 59715
 website: https://www.treelinecoffee.com
+instagram_handle: treelinecoffee
 lat: 45.686478
 lng: -111.02807
 cover: ./treeline-coffee/cover.png

@@ -46,8 +46,15 @@ const places = defineCollection({
     address: z.string(),
     website: z.url().optional(),
     phone: z.string().optional(),
-    // Bare handles, without the leading @ or a URL.
-    instagram_handle: z.string().regex(/^[\w.]+$/).optional(),
+    email: z.email().optional(),
+    // Bare handles, without the leading @ or a URL. One handle or a list.
+    instagram_handle: z
+      .union([
+        z.string().regex(/^[\w.]+$/),
+        z.array(z.string().regex(/^[\w.]+$/)).min(1),
+      ])
+      .transform((value): string[] => (typeof value === 'string' ? [value] : value))
+      .optional(),
     pinterest_handle: z.string().regex(/^[\w.]+$/).optional(),
     lat: z.number(),
     lng: z.number(),

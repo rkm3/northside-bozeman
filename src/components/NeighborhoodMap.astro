@@ -48,6 +48,7 @@ const points = await Promise.all(places.map(async (place) => {
     categoryLabel: formatCategoryLabels(place.data.categories),
     address: place.data.address,
     phone: place.data.phone,
+    email: place.data.email,
     fill: marker.fill,
     stroke: marker.stroke,
     coverSrc: popupCover?.src,
@@ -203,7 +204,9 @@ const mapConfig = JSON.stringify({
       places.map((place) => {
         const cover = place.data.cover;
         const isLogo = cover ? isLogoCover(cover) : false;
-        const { website, instagram_handle: instagramHandle, pinterest_handle: pinterestHandle } = place.data;
+        const website = place.data.website;
+        const instagramHandles = place.data.instagram_handle ?? [];
+        const pinterestHandle = place.data.pinterest_handle;
         return (
           <li class="h-full" data-categories={place.data.categories.join(',')}>
             <div class="relative flex h-full flex-col overflow-hidden border border-line bg-surface hover:border-rust">
@@ -243,10 +246,12 @@ const mapConfig = JSON.stringify({
                 >
                   {place.data.address}
                 </a>
-                {(website || instagramHandle || pinterestHandle) && (
+                {(website || instagramHandles.length > 0 || pinterestHandle) && (
                   <span class="relative z-10 mt-3 flex flex-wrap gap-2">
                     {website && <LinkPill kind="website" url={website} />}
-                    {instagramHandle && <LinkPill kind="instagram" handle={instagramHandle} />}
+                    {instagramHandles.map((handle) => (
+                      <LinkPill kind="instagram" handle={handle} />
+                    ))}
                     {pinterestHandle && <LinkPill kind="pinterest" handle={pinterestHandle} />}
                   </span>
                 )}
