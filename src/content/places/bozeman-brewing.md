@@ -4,6 +4,7 @@ categories:
   - food-drink
 address: 504 N Broadway Ave, Bozeman, MT 59715
 website: https://www.bozemanbrewing.com
+instagram_handle: bozemanbrewingco
 phone: (406) 585-9142
 private_contacts:
   - name: Kristen Hilleren

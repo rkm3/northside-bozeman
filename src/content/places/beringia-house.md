@@ -7,7 +7,7 @@ website: https://beringia.world
 email: bozeman@beringia.world
 instagram_handle:
   - beringiahouse
-  - berinigaworld
+  - beringiaworld
 private_contacts:
   - name: Outi Pulkkinen
     email: outi@beringia.world

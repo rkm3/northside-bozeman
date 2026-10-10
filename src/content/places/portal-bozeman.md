@@ -4,6 +4,7 @@ categories:
   - fitness-wellness
 address: 660 N Ida Ave, Bozeman, MT 59715
 website: https://www.portalthermaculture.com/bozeman
+instagram_handle: portalthermaculture
 phone: (406) 600-4193
 private_contacts:
   - name: Abby Morris

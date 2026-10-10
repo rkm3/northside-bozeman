@@ -4,6 +4,7 @@ categories:
   - services
 address: 615 E Peach St Suite C, Bozeman, MT 59715
 website: https://www.physicalspace.co/
+instagram_handle: physicalspace.co
 phone: (406) 404-6638
 private_contacts:
   - name: Allison Bryan

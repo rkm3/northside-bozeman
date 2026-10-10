@@ -4,6 +4,7 @@ categories:
   - arts-culture
 address: 700 N Wallace Ave Suite 4, Bozeman, MT 59715
 website: https://kimbieart.com/
+instagram_handle: kimbie.art
 private_contacts:
   - name: Kimbie Noble
     email: kimbie@kimbieart.com

@@ -4,6 +4,7 @@ categories:
   - food-drink
 address: 521 E Peach St Ste. C, Bozeman, MT 59715
 website: https://fattoadsfarmpantry.com/
+instagram_handle: fattoadsfarmpantry
 private_contacts:
   - name: Carly Brief
     email: carly@fattoadsfarmpantry.com

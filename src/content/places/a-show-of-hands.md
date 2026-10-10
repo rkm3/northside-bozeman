@@ -4,6 +4,7 @@ categories:
   - retail
 address: 521 E Peach St Suite B, Bozeman, MT 59715
 website: https://showofhandsmt.com/
+instagram_handle: showofhandsmt
 private_contacts:
   - name: Teema Loeffelholz
     email: info@peachstreetgoods.com

@@ -4,6 +4,7 @@ categories:
   - food-drink
 address: 611 N Wallace Ave, Bozeman, MT 59715
 website: https://www.goldengoosefoodtruck.com/
+instagram_handle: golden_goose_streeteats
 private_contacts:
   - name: Daniel
     email: daniel@goldengoosefoodtruck.com

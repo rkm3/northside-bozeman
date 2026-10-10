@@ -4,6 +4,7 @@ categories:
   - food-drink
 address: 528 N Broadway Ave, Bozeman, MT 59715
 website: https://rolypoly.coffee/
+instagram_handle: rolypolycoffeeco
 private_contacts:
   - name: Taylor
     email: taylor@howdypartner.coffee

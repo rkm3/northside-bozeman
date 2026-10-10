@@ -4,6 +4,7 @@ categories:
   - retail
 address: "605 N Wallace Ave #2, Bozeman, MT 59715"
 website: https://www.alter-cycles.com/
+instagram_handle: alter_bozeman
 private_contacts:
   - name: Mason
     email: service@alter-cycles.com

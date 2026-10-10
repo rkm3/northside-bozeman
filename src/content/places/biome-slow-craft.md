@@ -4,6 +4,7 @@ categories:
   - retail
 address: 609 E Peach St, Bozeman, MT 59715
 website: https://www.biomeslowcraft.com/
+instagram_handle: biome.slowcraft
 private_contacts:
   - name: Dennae
     email: dennae@biomeslowcraft.com

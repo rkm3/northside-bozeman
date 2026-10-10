@@ -4,6 +4,7 @@ categories:
   - services
 address: 618 N Wallace Ave, Bozeman, MT 59715
 website: https://www.savinc.net/
+instagram_handle: savdeinc
 private_contacts:
   - name: Brogan Conner
     email: brogan.conner@savinc.net

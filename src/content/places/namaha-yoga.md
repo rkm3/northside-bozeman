@@ -4,6 +4,7 @@ categories:
   - fitness-wellness
 address: 521 E Peach St Suite B, Bozeman, MT 59715
 website: https://www.namahayogamt.com/
+instagram_handle: namaha_yoga_mt
 phone: (406) 404-4302
 private_contacts:
   - name: Jessica Geary-Cecotti

@@ -4,6 +4,7 @@ categories:
   - food-drink
 address: "620 E Cottonwood St #102A, Bozeman, MT 59715"
 website: https://mischasbozeman.com/
+instagram_handle: mischasbozeman
 private_contacts:
   - name: mischa@mischasbozeman.com
     email: mischa@mischasbozeman.com

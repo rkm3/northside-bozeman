@@ -4,6 +4,7 @@ categories:
   - food-drink
 address: 600 N Wallace Ave, Bozeman, MT 59715
 website: https://www.wildcrumb.com
+instagram_handle: wildcrumb
 private_contacts:
   - name: Kelsey Ludin
     email: wildcrumb@gmail.com
