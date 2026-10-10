@@ -275,7 +275,11 @@ export function mountNeighborhoodMap(config: NeighborhoodMapConfig): void {
   const youLegend = document.getElementById('you-legend');
   const showMeButton = document.getElementById('show-me-on-map');
   const showMeStatus = document.getElementById('show-me-status');
+  const searchRoot = document.getElementById('place-search');
+  const searchToggle = document.getElementById('place-search-toggle');
+  const searchInput = document.getElementById('place-search-input');
   let activeCategory = '';
+  let searchQuery = '';
 
   function setStatus(message: string): void {
     if (showMeStatus) showMeStatus.textContent = message;
@@ -294,16 +298,40 @@ export function mountNeighborhoodMap(config: NeighborhoodMapConfig): void {
     });
   }
 
+  function matchesSearch(item: HTMLElement): boolean {
+    if (!searchQuery) return true;
+    return (item.dataset.search ?? '').toLowerCase().includes(searchQuery);
+  }
+
   function updateList(): void {
     if (!list) return;
     let visible = 0;
     list.querySelectorAll<HTMLElement>('[data-categories]').forEach((item) => {
       const categories = (item.dataset.categories ?? '').split(',').filter(Boolean);
-      const show = !activeCategory || categories.includes(activeCategory);
+      const show =
+        (!activeCategory || categories.includes(activeCategory)) && matchesSearch(item);
       item.classList.toggle('hidden', !show);
       if (show) visible += 1;
     });
     empty?.classList.toggle('hidden', visible > 0);
+    if (empty) {
+      empty.textContent = searchQuery
+        ? 'No places match that search.'
+        : 'No places in this category.';
+    }
+  }
+
+  function setSearchOpen(open: boolean): void {
+    searchRoot?.classList.toggle('is-open', open);
+    searchToggle?.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (searchInput instanceof HTMLInputElement) {
+      searchInput.tabIndex = open ? 0 : -1;
+      if (open) {
+        searchInput.focus();
+      } else {
+        searchInput.blur();
+      }
+    }
   }
 
   filterRoot?.addEventListener('click', (event) => {
@@ -317,6 +345,34 @@ export function mountNeighborhoodMap(config: NeighborhoodMapConfig): void {
     updateList();
     redrawPlaces();
   });
+
+  searchToggle?.addEventListener('click', () => {
+    const open = !searchRoot?.classList.contains('is-open');
+    setSearchOpen(open);
+    if (!open && searchInput instanceof HTMLInputElement && searchInput.value) {
+      searchInput.value = '';
+      searchQuery = '';
+      updateList();
+      redrawPlaces();
+    }
+  });
+
+  if (searchInput instanceof HTMLInputElement) {
+    searchInput.addEventListener('input', () => {
+      searchQuery = searchInput.value.trim().toLowerCase();
+      updateList();
+      redrawPlaces();
+    });
+    searchInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        searchInput.value = '';
+        searchQuery = '';
+        updateList();
+        redrawPlaces();
+        setSearchOpen(false);
+      }
+    });
+  }
 
   syncFilters();
   updateLegend();
@@ -342,9 +398,12 @@ export function mountNeighborhoodMap(config: NeighborhoodMapConfig): void {
     infoWindow.close();
 
     const points = spreadOverlapping(
-      config.points.filter(
-        (point) => !activeCategory || point.categories.includes(activeCategory),
-      ),
+      config.points.filter((point) => {
+        if (activeCategory && !point.categories.includes(activeCategory)) return false;
+        if (!searchQuery) return true;
+        const hay = [point.name, point.address, point.categoryLabel].join(' ').toLowerCase();
+        return hay.includes(searchQuery);
+      }),
     );
     const bounds = new maps.LatLngBounds();
     for (const point of config.boundaryRing) bounds.extend(point);

@@ -70,3 +70,27 @@
 .skip-link:focus {
   transform: translateY(0);
 }
+
+/* Pagefind Component UI — brand tokens (shadow DOM; only --pf-* crosses the boundary). */
+:root {
+  --pf-text: var(--color-ink);
+  --pf-text-secondary: var(--color-muted);
+  --pf-text-muted: var(--color-muted);
+  --pf-background: var(--color-surface);
+  --pf-border: var(--color-line);
+  --pf-border-focus: var(--color-rust);
+  --pf-skeleton: var(--color-paper);
+  --pf-skeleton-shine: var(--color-surface);
+  --pf-hover: var(--color-paper);
+  --pf-mark: var(--color-ink);
+  --pf-scroll-shadow: transparent;
+  --pf-shadow-sm: none;
+  --pf-shadow-md: none;
+  --pf-shadow-lg: none;
+  --pf-outline-focus: var(--color-rust);
+  --pf-outline-width: 2px;
+  --pf-outline-offset: 3px;
+  --pf-font: var(--font-sans);
+  --pf-border-radius: 0;
+  --pf-modal-backdrop: color-mix(in srgb, var(--color-ink) 45%, transparent);
+}

@@ -47,7 +47,7 @@ const kicker = isArchived
 >
   <PageHeader kicker={kicker} title={place.data.name} />
 
-  <article class="mx-auto max-w-5xl px-4 py-6">
+  <article class="mx-auto max-w-5xl px-4 py-6" data-pagefind-filter="type:place">
     {
       isArchived && (
         <p class="mb-8 max-w-2xl border border-line bg-surface px-5 py-4 text-base leading-relaxed">

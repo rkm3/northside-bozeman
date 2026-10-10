@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import PagefindConfig from 'astro-pagefind/components/PagefindConfig.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { brandColors } from '../data/brand';
@@ -7,9 +8,11 @@ import { brandColors } from '../data/brand';
 interface Props {
   title: string;
   description: string;
+  /** When false, omit from the Pagefind search index (member tools, 404, etc.). */
+  indexable?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, indexable = true } = Astro.props;
 const fullTitle =
   title === 'Northside Neighborhood' ? title : `${title} · Northside Neighborhood`;
 ---
@@ -30,11 +33,13 @@ const fullTitle =
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="generator" content={Astro.generator} />
     <title>{fullTitle}</title>
+    <PagefindConfig />
   </head>
   <body class="min-h-screen antialiased">
     <a class="skip-link" href="#main">Skip to content</a>
     <Header />
-    <main id="main">
+    <pagefind-modal reset-on-close></pagefind-modal>
+    <main id="main" data-pagefind-body={indexable ? '' : undefined}>
       <slot />
     </main>
     <Footer />

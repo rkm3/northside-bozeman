@@ -25,31 +25,39 @@ function isActive(href: string): boolean {
       <Logo variant="badge" alt="" class="h-auto w-16 sm:w-[4.5rem]" />
       <DistrictLockup />
     </a>
-    <nav aria-label="Primary">
-      <ul class="flex flex-wrap gap-x-5 gap-y-2">
-        {
-          items.map((item) => {
-            const active = isActive(item.href);
-            return (
-              <li>
-                <a
-                  href={item.href}
-                  aria-current={active ? 'page' : undefined}
-                  class:list={[
-                    'text-sm underline-offset-4',
-                    active
-                      ? 'font-semibold text-rust underline'
-                      : 'text-ink hover:text-rust hover:underline',
-                  ]}
-                >
-                  {item.label}
-                </a>
-              </li>
-            );
-          })
-        }
-      </ul>
-    </nav>
+    <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+      <nav aria-label="Primary">
+        <ul class="flex flex-wrap gap-x-5 gap-y-2">
+          {
+            items.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <li>
+                  <a
+                    href={item.href}
+                    aria-current={active ? 'page' : undefined}
+                    class:list={[
+                      'text-sm underline-offset-4',
+                      active
+                        ? 'font-semibold text-rust underline'
+                        : 'text-ink hover:text-rust hover:underline',
+                    ]}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </nav>
+      <pagefind-modal-trigger
+        compact
+        hide-shortcut
+        placeholder="Search the site"
+        aria-label="Search the site"
+      ></pagefind-modal-trigger>
+    </div>
   </div>
   <div class="h-1 bg-rust"></div>
   <div class="h-px bg-ochre"></div>
