@@ -89,14 +89,21 @@ const fields: {
   {
     name: 'instagram_handle',
     required: false,
-    format: 'The handle only: no @, no link. Use a YAML list when a business has more than one.',
+    format: 'The handle only: no @, no link. Use a YAML list when a business has more than one. Instagram is the primary social link.',
     example: 'gangbusterspottery',
     shows: 'Instagram pill(s)',
   },
   {
+    name: 'threads_handle',
+    required: false,
+    format: 'The handle only: no @, no link. Add when Threads is how people find them (especially if the website is thin).',
+    example: 'medium.gallery.bzn',
+    shows: 'Threads pill',
+  },
+  {
     name: 'pinterest_handle',
     required: false,
-    format: 'The handle only: no @, no link.',
+    format: 'The handle only: no @, no link. Useful for makers and shops that actually pin.',
     example: 'gangbusterspottery',
     shows: 'Pinterest pill',
   },
@@ -141,6 +148,7 @@ private_contacts:
     email: jane@example.com
     phone: (406) 555-0100
 instagram_handle: gangbusterspottery
+threads_handle: gangbusterspottery
 pinterest_handle: gangbusterspottery
 lat: 45.687424
 lng: -111.028207

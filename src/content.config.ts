@@ -66,6 +66,7 @@ const places = defineCollection({
       )
       .default([]),
     // Bare handles, without the leading @ or a URL. One handle or a list.
+    // Cap at Instagram (primary), Threads, and Pinterest — not a full social matrix.
     instagram_handle: z
       .union([
         z.string().regex(/^[\w.]+$/),
@@ -73,6 +74,7 @@ const places = defineCollection({
       ])
       .transform((value): string[] => (typeof value === 'string' ? [value] : value))
       .optional(),
+    threads_handle: z.string().regex(/^[\w.]+$/).optional(),
     pinterest_handle: z.string().regex(/^[\w.]+$/).optional(),
     lat: z.number(),
     lng: z.number(),

@@ -23,6 +23,7 @@ const cover = place.data.cover;
 const isLogo = cover ? isLogoCover(cover) : false;
 const website = place.data.website;
 const instagramHandles = place.data.instagram_handle ?? [];
+const threadsHandle = place.data.threads_handle;
 const pinterestHandle = place.data.pinterest_handle;
 const isArchived = place.data.status === 'archived';
 const isDraft = place.data.status === 'draft';
@@ -133,13 +134,14 @@ const kicker = isArchived
         )
       }
       {
-        (instagramHandles.length > 0 || pinterestHandle) && (
+        (instagramHandles.length > 0 || threadsHandle || pinterestHandle) && (
           <div class="sm:col-span-2">
             <dt class="text-xs uppercase tracking-[0.16em] text-muted">Social</dt>
             <dd class="mt-2 flex flex-wrap gap-2">
               {instagramHandles.map((handle) => (
                 <LinkPill kind="instagram" handle={handle} />
               ))}
+              {threadsHandle && <LinkPill kind="threads" handle={threadsHandle} />}
               {pinterestHandle && <LinkPill kind="pinterest" handle={pinterestHandle} />}
             </dd>
           </div>

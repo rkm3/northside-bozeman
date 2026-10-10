@@ -100,8 +100,10 @@ A short description of the business, in plain sentences.
     `a-show-of-hands`). Member contacts still lists archived rows in their own table.
 - `categories`: one or more of the ids in `src/data/place-categories.ts`. The **first** category
   sets the pin color.
-- `website`, `phone`, `email`, and social handles are optional. `instagram_handle` is a bare
-  handle (no `@`), or a YAML list when a business has more than one.
+- `website`, `phone`, `email`, and social handles are optional. Social handles are bare (no `@`):
+  `instagram_handle` (primary; string or YAML list), plus optional `threads_handle` and
+  `pinterest_handle`. Cap at those three — not a full social matrix. Prefer Threads/Pinterest
+  when the website is thin or that network is how people find the business.
 - `private_contacts`: optional YAML list of `{ name, email?, phone? }` for the **members**
   directory. Fields prefixed `private_` never render on public place pages or the map. They stay
   in git as plaintext for collaborators; the public site only ships an encrypted blob.

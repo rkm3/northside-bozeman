@@ -209,6 +209,7 @@ const mapConfig = JSON.stringify({
         const isLogo = cover ? isLogoCover(cover) : false;
         const website = place.data.website;
         const instagramHandles = place.data.instagram_handle ?? [];
+        const threadsHandle = place.data.threads_handle;
         const pinterestHandle = place.data.pinterest_handle;
         return (
           <li class="h-full" data-categories={place.data.categories.join(',')}>
@@ -249,12 +250,13 @@ const mapConfig = JSON.stringify({
                 >
                   {place.data.address}
                 </a>
-                {(website || instagramHandles.length > 0 || pinterestHandle) && (
+                {(website || instagramHandles.length > 0 || threadsHandle || pinterestHandle) && (
                   <span class="relative z-10 mt-3 flex flex-wrap gap-2">
                     {website && <LinkPill kind="website" url={website} />}
                     {instagramHandles.map((handle) => (
                       <LinkPill kind="instagram" handle={handle} />
                     ))}
+                    {threadsHandle && <LinkPill kind="threads" handle={threadsHandle} />}
                     {pinterestHandle && <LinkPill kind="pinterest" handle={pinterestHandle} />}
                   </span>
                 )}
