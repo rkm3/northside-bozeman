@@ -5,6 +5,9 @@ categories:
 address: 422 N Plum Ave, Bozeman, MT 59715
 website: https://www.mountainswalking.com/
 instagram_handle: mountainswalking
+private_contacts:
+  - name: Sarah MacDonald
+    email: sarah@mountainswalking.com
 lat: 45.684876
 lng: -111.024867
 cover: ./mountains-walking-brewery/cover.webp

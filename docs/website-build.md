@@ -74,6 +74,7 @@ category or a missing field fails the build instead of shipping a broken page.
 ```markdown
 ---
 name: Grotto Meats
+status: live
 categories:
   - food-drink
 address: 611 N Wallace Ave Unit 4, Bozeman, MT 59715
@@ -90,6 +91,13 @@ lng: -111.029266
 A short description of the business, in plain sentences.
 ```
 
+- `status`: `live` (default), `draft`, or `archived`.
+  - **live** — on the map, directory cards, and member contacts.
+  - **draft** — only in `astro dev`, or when `PUBLIC_INCLUDE_DRAFTS=1` (preview deploys). Use
+    this to review a new listing before it goes public.
+  - **archived** — place page kept for history (with a “Former business” note), hidden from the
+    map. Set `successor` to the place id of the business it became (example: Peach Street Goods →
+    `a-show-of-hands`). Member contacts still lists archived rows in their own table.
 - `categories`: one or more of the ids in `src/data/place-categories.ts`. The **first** category
   sets the pin color.
 - `website`, `phone`, `email`, and social handles are optional. `instagram_handle` is a bare

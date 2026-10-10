@@ -17,11 +17,12 @@ import { boundaryRingToPoints } from '../utils/boundary-svg';
 import LinkPill from './LinkPill.astro';
 import { isLogoCover } from '../utils/place-image';
 import { omitPrivateFields } from '../utils/omit-private-fields';
+import { isListedPlace } from '../utils/place-status';
 import { getWebsiteLabel } from '../utils/website-label';
 
-const places = (await getCollection('places')).sort((a, b) =>
-  a.data.name.localeCompare(b.data.name),
-);
+const places = (await getCollection('places'))
+  .filter(isListedPlace)
+  .sort((a, b) => a.data.name.localeCompare(b.data.name));
 
 const rawKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY;
 const trimmed = typeof rawKey === 'string' ? rawKey.trim() : '';

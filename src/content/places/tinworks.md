@@ -5,6 +5,9 @@ categories:
   - nonprofit
 address: 719 N Ida Ave, Bozeman, MT 59715
 website: https://www.tinworksart.org
+private_contacts:
+  - name: Angela Yonke
+    email: angela.yonke@tinworksart.org
 lat: 45.687347
 lng: -111.026852
 cover: ./tinworks/cover.jpg

@@ -6,6 +6,9 @@ address: 611 N Wallace Ave, Bozeman, MT 59715
 website: https://www.mountainprovisionsmt.com/
 email: info@mountainprovisionsmt.com
 instagram_handle: mountain_provisionsmt
+private_contacts:
+  - name: Emily Hahn
+    email: info@mountainprovisionsmt.com
 lat: 45.68622
 lng: -111.0291
 ---

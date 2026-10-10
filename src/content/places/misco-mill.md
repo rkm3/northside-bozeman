@@ -4,6 +4,9 @@ categories:
   - retail
 address: 700 N Wallace Ave, Bozeman, MT 59715
 website: https://www.miscomill.com/
+private_contacts:
+  - name: Shaw Thompson
+    email: shaw@miscomill.com
 lat: 45.687125
 lng: -111.027912
 cover: ./misco-mill/cover.png

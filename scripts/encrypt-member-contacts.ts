@@ -17,6 +17,7 @@ import {
   encryptContacts,
   type MemberContactRow,
 } from '../src/utils/member-contacts-crypto.ts';
+import { PLACE_STATUSES, type PlaceStatus } from '../src/utils/place-status.ts';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const placesDir = join(root, 'src/content/places');
@@ -46,12 +47,21 @@ function loadDotEnv(path: string): void {
 
 type PlaceFrontmatter = {
   name?: string;
+  status?: PlaceStatus;
+  successor?: string;
   private_contacts?: Array<{
     name?: string;
     email?: string;
     phone?: string;
   }>;
 };
+
+function resolveStatus(value: unknown): PlaceStatus {
+  if (typeof value === 'string' && (PLACE_STATUSES as readonly string[]).includes(value)) {
+    return value as PlaceStatus;
+  }
+  return 'live';
+}
 
 function parseFrontmatter(source: string): PlaceFrontmatter {
   if (!source.startsWith('---')) {
@@ -72,6 +82,14 @@ function parseFrontmatter(source: string): PlaceFrontmatter {
 function collectRows(): MemberContactRow[] {
   const rows: MemberContactRow[] = [];
   const files = readdirSync(placesDir).filter((name) => name.endsWith('.md'));
+  const namesById = new Map<string, string>();
+
+  for (const file of files) {
+    const placeId = basename(file, '.md');
+    const data = parseFrontmatter(readFileSync(join(placesDir, file), 'utf8'));
+    const business = data.name?.trim();
+    if (business) namesById.set(placeId, business);
+  }
 
   for (const file of files) {
     const placeId = basename(file, '.md');
@@ -80,18 +98,29 @@ function collectRows(): MemberContactRow[] {
     const business = data.name?.trim();
     const contacts = data.private_contacts ?? [];
     if (!business || contacts.length === 0) continue;
+    const status = resolveStatus(data.status);
+    const successorId = data.successor?.trim();
+    const successorName = successorId ? namesById.get(successorId) : undefined;
 
     for (const contact of contacts) {
       const name = contact.name?.trim();
       if (!name) continue;
-      const row: MemberContactRow = { placeId, business, name };
+      const row: MemberContactRow = { placeId, business, name, status };
       if (contact.email) row.email = contact.email;
       if (contact.phone) row.phone = contact.phone;
+      if (successorId && successorName) {
+        row.successorId = successorId;
+        row.successorName = successorName;
+      }
       rows.push(row);
     }
   }
 
+  const statusRank = new Map(PLACE_STATUSES.map((status, index) => [status, index]));
   rows.sort((a, b) => {
+    const byStatus =
+      (statusRank.get(a.status ?? 'live') ?? 0) - (statusRank.get(b.status ?? 'live') ?? 0);
+    if (byStatus !== 0) return byStatus;
     const byBusiness = a.business.localeCompare(b.business);
     return byBusiness !== 0 ? byBusiness : a.name.localeCompare(b.name);
   });

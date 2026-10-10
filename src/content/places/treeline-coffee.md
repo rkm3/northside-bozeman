@@ -5,6 +5,8 @@ categories:
 address: 624 N Wallace Ave, Bozeman, MT 59715
 website: https://www.treelinecoffee.com
 instagram_handle: treelinecoffee
+private_contacts:
+  - name: Natalie Van Dusen
 lat: 45.686478
 lng: -111.02807
 cover: ./treeline-coffee/cover.png

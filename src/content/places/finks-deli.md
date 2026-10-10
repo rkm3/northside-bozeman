@@ -4,6 +4,9 @@ categories:
   - food-drink
 address: 600 N Wallace Ave Suite 4, Bozeman, MT 59715
 website: https://www.finksdeli.com/
+private_contacts:
+  - name: Sean Merrill
+    email: finksdeli@gmail.com
 lat: 45.685931
 lng: -111.027996
 cover: ./finks-deli/cover.jpg

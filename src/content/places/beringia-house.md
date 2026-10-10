@@ -4,9 +4,15 @@ categories:
   - retail
 address: 610 N Wallace Ave, Bozeman, MT 59715
 website: https://beringia.world
+email: bozeman@beringia.world
 instagram_handle:
   - beringiahouse
   - berinigaworld
+private_contacts:
+  - name: Outi Pulkkinen
+    email: outi@beringia.world
+  - name: Robin
+    email: robin@beringia.world
 lat: 45.68598
 lng: -111.028125
 cover: ./beringia-house/cover.jpg

@@ -4,6 +4,9 @@ categories:
   - services
 address: 724 N Wallace Ave, Bozeman, MT 59715
 website: https://www.greenseamdesigns.com/
+private_contacts:
+  - name: Jay
+    email: j.lesser@hotmail.com
 lat: 45.687397
 lng: -111.028189
 cover: ./green-seam-designs/cover.png

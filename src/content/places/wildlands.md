@@ -8,6 +8,9 @@ phone: (406) 995-2404
 instagram_handle:
   - wildlands_downtownbozeman
   - outlaw_realty
+private_contacts:
+  - name: George Vincent
+    email: george@theoutlawpartners.com
 lat: 45.6859
 lng: -111.02805
 ---

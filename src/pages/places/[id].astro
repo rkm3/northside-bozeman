@@ -1,16 +1,17 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import LinkPill from '../../components/LinkPill.astro';
 import { formatCategoryLabels } from '../../data/place-categories';
 import { isLogoCover } from '../../utils/place-image';
+import { isPlacePageBuilt } from '../../utils/place-status';
 import { getWebsiteLabel } from '../../utils/website-label';
 
 export async function getStaticPaths() {
   const places = await getCollection('places');
-  return places.map((place) => ({
+  return places.filter(isPlacePageBuilt).map((place) => ({
     params: { id: place.id },
     props: { place },
   }));
@@ -23,15 +24,58 @@ const isLogo = cover ? isLogoCover(cover) : false;
 const website = place.data.website;
 const instagramHandles = place.data.instagram_handle ?? [];
 const pinterestHandle = place.data.pinterest_handle;
+const isArchived = place.data.status === 'archived';
+const isDraft = place.data.status === 'draft';
+const successor = place.data.successor
+  ? await getEntry('places', place.data.successor)
+  : undefined;
+const kicker = isArchived
+  ? 'Former business'
+  : isDraft
+    ? `Draft · ${formatCategoryLabels(place.data.categories)}`
+    : formatCategoryLabels(place.data.categories);
 ---
 
 <BaseLayout
   title={place.data.name}
-  description={`${place.data.name} on Bozeman’s Northside. ${place.data.address}`}
+  description={
+    isArchived
+      ? `${place.data.name} was a Northside Bozeman business. ${place.data.address}`
+      : `${place.data.name} on Bozeman’s Northside. ${place.data.address}`
+  }
 >
-  <PageHeader kicker={formatCategoryLabels(place.data.categories)} title={place.data.name} />
+  <PageHeader kicker={kicker} title={place.data.name} />
 
   <article class="mx-auto max-w-5xl px-4 py-6">
+    {
+      isArchived && (
+        <p class="mb-8 max-w-2xl border border-line bg-surface px-5 py-4 text-base leading-relaxed">
+          This listing is archived
+          {successor ? (
+            <>
+              {' '}
+              — the shop continues as{' '}
+              <a
+                class="font-semibold text-rust underline-offset-4 hover:underline"
+                href={`/places/${successor.id}`}
+              >
+                {successor.data.name}
+              </a>
+              .
+            </>
+          ) : (
+            '.'
+          )}
+        </p>
+      )
+    }
+    {
+      isDraft && (
+        <p class="mb-8 max-w-2xl border border-line bg-surface px-5 py-4 text-base leading-relaxed text-muted">
+          Draft listing — visible in local/preview builds only, not on the public map yet.
+        </p>
+      )
+    }
     {
       cover && (
         <Image

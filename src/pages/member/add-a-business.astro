@@ -43,6 +43,21 @@ const fields: {
     shows: 'Map pin position',
   },
   {
+    name: 'status',
+    required: false,
+    format:
+      'live (default), draft, or archived. draft only appears in local/preview builds (astro dev or PUBLIC_INCLUDE_DRAFTS=1). archived keeps the place page for history but drops the map pin; set successor to the place id it became.',
+    example: 'live',
+    shows: 'Map / directory visibility; archived pages show a Former business note',
+  },
+  {
+    name: 'successor',
+    required: false,
+    format: 'For archived listings only: the place file id of the business this one became (no .md).',
+    example: 'a-show-of-hands',
+    shows: '“Continues as …” link on the archived place page',
+  },
+  {
     name: 'website',
     required: false,
     format: 'Full URL starting with https://. Use the business’s own site, not a social profile.',

@@ -4,6 +4,9 @@ categories:
   - fitness-wellness
 address: 707 E Peach St Suite C, Bozeman, MT 59715
 website: https://www.bozemanpickleballclub.com/
+private_contacts:
+  - name: Elliot
+    email: em@bozemanpickleballclub.com
 lat: 45.685918
 lng: -111.025944
 cover: ./bozeman-classic-pickleball-club/cover.jpg

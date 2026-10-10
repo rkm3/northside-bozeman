@@ -4,6 +4,11 @@ import {
   type EncryptedContactsBlob,
   type MemberContactRow,
 } from '../utils/member-contacts-crypto';
+import {
+  PLACE_STATUSES,
+  PLACE_STATUS_LABELS,
+  type PlaceStatus,
+} from '../utils/place-status';
 
 function $(id: string): HTMLElement | null {
   return document.getElementById(id);
@@ -21,48 +26,141 @@ function setError(message: string | null): void {
   el.classList.remove('hidden');
 }
 
-function showResults(rows: MemberContactRow[]): void {
-  const form = $('member-contacts-form');
-  const results = $('member-contacts-results');
-  const tbody = $('member-contacts-tbody');
-  const count = $('member-contacts-count');
-  if (!(results instanceof HTMLElement) || !(tbody instanceof HTMLElement)) return;
+function rowStatus(row: MemberContactRow): PlaceStatus {
+  const status = row.status;
+  if (status && (PLACE_STATUSES as readonly string[]).includes(status)) {
+    return status;
+  }
+  return 'live';
+}
 
-  tbody.replaceChildren();
-  const sorted = [...rows].sort((a, b) => {
+function sortRows(rows: MemberContactRow[]): MemberContactRow[] {
+  return [...rows].sort((a, b) => {
     const byBusiness = a.business.localeCompare(b.business);
     return byBusiness !== 0 ? byBusiness : a.name.localeCompare(b.name);
   });
+}
 
-  for (const row of sorted) {
-    const tr = document.createElement('tr');
-    const cells = [row.business, row.name, row.email ?? '', row.phone ?? ''];
-    for (const [index, value] of cells.entries()) {
-      const td = document.createElement('td');
-      td.className = 'px-4 py-3 align-top';
-      if (index === 2 && row.email) {
-        const a = document.createElement('a');
-        a.href = `mailto:${row.email}`;
-        a.className = 'text-rust underline-offset-4 hover:underline';
-        a.textContent = row.email;
-        td.appendChild(a);
-      } else if (index === 3 && row.phone) {
-        const a = document.createElement('a');
-        a.href = `tel:${row.phone.replace(/[^\d+]/g, '')}`;
-        a.className = 'text-rust underline-offset-4 hover:underline';
-        a.textContent = row.phone;
-        td.appendChild(a);
-      } else {
-        td.textContent = value;
+function appendContactRow(tbody: HTMLTableSectionElement, row: MemberContactRow): void {
+  const tr = document.createElement('tr');
+  const cells = [row.business, row.name, row.email ?? '', row.phone ?? ''];
+  for (const [index, value] of cells.entries()) {
+    const td = document.createElement('td');
+    td.className = 'px-4 py-3 align-top';
+    if (index === 0 && row.placeId) {
+      const a = document.createElement('a');
+      a.href = `/places/${row.placeId}`;
+      a.className = 'font-semibold text-rust underline-offset-4 hover:underline';
+      a.textContent = row.business;
+      td.appendChild(a);
+      if (row.successorId && row.successorName) {
+        const now = document.createElement('p');
+        now.className = 'mt-1 text-xs text-muted';
+        now.append('Now ');
+        const successorLink = document.createElement('a');
+        successorLink.href = `/places/${row.successorId}`;
+        successorLink.className = 'font-semibold text-rust underline-offset-4 hover:underline';
+        successorLink.textContent = row.successorName;
+        now.appendChild(successorLink);
+        td.appendChild(now);
       }
-      tr.appendChild(td);
+    } else if (index === 2 && row.email) {
+      const a = document.createElement('a');
+      a.href = `mailto:${row.email}`;
+      a.className = 'text-rust underline-offset-4 hover:underline';
+      a.textContent = row.email;
+      td.appendChild(a);
+    } else if (index === 3 && row.phone) {
+      const a = document.createElement('a');
+      a.href = `tel:${row.phone.replace(/[^\d+]/g, '')}`;
+      a.className = 'text-rust underline-offset-4 hover:underline';
+      a.textContent = row.phone;
+      td.appendChild(a);
+    } else {
+      td.textContent = value;
     }
-    tbody.appendChild(tr);
+    tr.appendChild(td);
+  }
+  tbody.appendChild(tr);
+}
+
+function buildStatusSection(status: PlaceStatus, rows: MemberContactRow[]): HTMLElement {
+  const section = document.createElement('section');
+
+  const heading = document.createElement('div');
+  heading.className = 'mb-3 flex flex-wrap items-baseline justify-between gap-2';
+
+  const title = document.createElement('h2');
+  title.className = 'font-serif text-2xl font-medium tracking-tight';
+  title.textContent = PLACE_STATUS_LABELS[status];
+
+  const meta = document.createElement('p');
+  meta.className = 'text-sm text-muted';
+  meta.textContent = rows.length === 1 ? '1 contact' : `${String(rows.length)} contacts`;
+
+  heading.append(title, meta);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'overflow-x-auto border border-line bg-surface';
+
+  const table = document.createElement('table');
+  table.className = 'min-w-full text-left text-sm';
+
+  const thead = document.createElement('thead');
+  thead.className = 'border-b border-line bg-paper text-xs uppercase tracking-[0.14em] text-muted';
+  const headRow = document.createElement('tr');
+  for (const label of ['Business', 'Name', 'Email', 'Phone']) {
+    const th = document.createElement('th');
+    th.className = 'px-4 py-3 font-semibold';
+    th.scope = 'col';
+    th.textContent = label;
+    headRow.appendChild(th);
+  }
+  thead.appendChild(headRow);
+
+  const tbody = document.createElement('tbody');
+  tbody.className = 'divide-y divide-line';
+  for (const row of sortRows(rows)) {
+    appendContactRow(tbody, row);
+  }
+
+  table.append(thead, tbody);
+  wrap.appendChild(table);
+  section.append(heading, wrap);
+  return section;
+}
+
+function showResults(rows: MemberContactRow[]): void {
+  const form = $('member-contacts-form');
+  const results = $('member-contacts-results');
+  const sections = $('member-contacts-sections');
+  const count = $('member-contacts-count');
+  if (!(results instanceof HTMLElement) || !(sections instanceof HTMLElement)) return;
+
+  sections.replaceChildren();
+
+  const byStatus = new Map<PlaceStatus, MemberContactRow[]>();
+  for (const status of PLACE_STATUSES) {
+    byStatus.set(status, []);
+  }
+  for (const row of rows) {
+    byStatus.get(rowStatus(row))?.push(row);
+  }
+
+  let visibleSections = 0;
+  for (const status of PLACE_STATUSES) {
+    const group = byStatus.get(status) ?? [];
+    if (group.length === 0) continue;
+    sections.appendChild(buildStatusSection(status, group));
+    visibleSections += 1;
   }
 
   if (count) {
-    count.textContent =
-      sorted.length === 1 ? '1 contact' : `${String(sorted.length)} contacts`;
+    const parts = [`${String(rows.length)} contact${rows.length === 1 ? '' : 's'}`];
+    if (visibleSections > 1) {
+      parts.push(`${String(visibleSections)} groups`);
+    }
+    count.textContent = parts.join(' · ');
   }
 
   form?.classList.add('hidden');
@@ -73,14 +171,14 @@ function showResults(rows: MemberContactRow[]): void {
 function lockAgain(): void {
   const form = $('member-contacts-form');
   const results = $('member-contacts-results');
-  const tbody = $('member-contacts-tbody');
+  const sections = $('member-contacts-sections');
   const password = document.getElementById('member-contacts-password');
   form?.classList.remove('hidden');
   if (results instanceof HTMLElement) {
     results.hidden = true;
     results.classList.add('hidden');
   }
-  tbody?.replaceChildren();
+  sections?.replaceChildren();
   if (password instanceof HTMLInputElement) {
     password.value = '';
     password.focus();

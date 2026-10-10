@@ -42,6 +42,12 @@ const places = defineCollection({
   loader: glob({ base: './src/content/places', pattern: '**/*.md' }),
   schema: ({ image }) => z.object({
     name: z.string(),
+    // live: on the map and directory. draft: only in astro dev (or when
+    // PUBLIC_INCLUDE_DRAFTS=1). archived: place page kept for history, hidden
+    // from the map; use successor for “became …” links.
+    status: z.enum(['live', 'draft', 'archived']).default('live'),
+    // Place id of the business this one became (archived only), e.g. a-show-of-hands.
+    successor: z.string().optional(),
     categories: z.array(z.enum(PLACE_CATEGORIES)).min(1),
     address: z.string(),
     website: z.url().optional(),

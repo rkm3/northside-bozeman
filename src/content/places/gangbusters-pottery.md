@@ -8,8 +8,7 @@ instagram_handle: gangbusterspottery
 pinterest_handle: gangbusterspottery
 private_contacts:
   - name: Ryan Mitchell
-    email: ryan@gangbusterspottery.com
-    phone: (406) 555-0199
+    email: gangbusterspottery@gmail.com
 lat: 45.687424
 lng: -111.028207
 cover: ./gangbusters-pottery/cover.png

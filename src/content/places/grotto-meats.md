@@ -6,6 +6,9 @@ address: 611 N Wallace Ave Unit 4, Bozeman, MT 59715
 phone: (406) 548-1438
 email: grottomeats@gmail.com
 instagram_handle: grottomeats
+private_contacts:
+  - name: grottomeats@gmail.com
+    email: grottomeats@gmail.com
 lat: 45.686193
 lng: -111.029266
 cover: ./grotto-meats/cover.avif

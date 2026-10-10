@@ -43,7 +43,7 @@ import PageHeader from '../../components/PageHeader.astro';
     </form>
 
     <div id="member-contacts-results" class="mt-10 hidden" hidden>
-      <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+      <div class="mb-6 flex flex-wrap items-end justify-between gap-3">
         <p id="member-contacts-count" class="text-sm text-muted"></p>
         <button
           type="button"
@@ -53,19 +53,7 @@ import PageHeader from '../../components/PageHeader.astro';
           Lock again
         </button>
       </div>
-      <div class="overflow-x-auto border border-line bg-surface">
-        <table class="min-w-full text-left text-sm">
-          <thead class="border-b border-line bg-paper text-xs uppercase tracking-[0.14em] text-muted">
-            <tr>
-              <th class="px-4 py-3 font-semibold" scope="col">Business</th>
-              <th class="px-4 py-3 font-semibold" scope="col">Name</th>
-              <th class="px-4 py-3 font-semibold" scope="col">Email</th>
-              <th class="px-4 py-3 font-semibold" scope="col">Phone</th>
-            </tr>
-          </thead>
-          <tbody id="member-contacts-tbody" class="divide-y divide-line"></tbody>
-        </table>
-      </div>
+      <div id="member-contacts-sections" class="space-y-10"></div>
     </div>
 
     <p class="mt-8">

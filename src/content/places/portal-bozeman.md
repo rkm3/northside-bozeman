@@ -5,6 +5,9 @@ categories:
 address: 660 N Ida Ave, Bozeman, MT 59715
 website: https://www.portalthermaculture.com/bozeman
 phone: (406) 600-4193
+private_contacts:
+  - name: Abby Morris
+    email: abby@portalthermaculture.com
 lat: 45.686309
 lng: -111.026184
 cover: ./portal-bozeman/cover.png

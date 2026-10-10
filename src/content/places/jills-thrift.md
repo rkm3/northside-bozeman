@@ -4,6 +4,9 @@ categories:
   - retail
 address: 611 N Wallace Ave Basement, Bozeman, MT 59715
 instagram_handle: jillsthrift
+private_contacts:
+  - name: Jill Reynolds
+    email: jmreyno4@gmail.com
 lat: 45.68616
 lng: -111.0292
 ---

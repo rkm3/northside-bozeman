@@ -17,6 +17,11 @@ export type MemberContactRow = {
   placeId: string;
   business: string;
   name: string;
+  /** Place listing status; missing on older blobs → treat as live. */
+  status?: 'live' | 'draft' | 'archived';
+  /** When archived with a successor, the current business place id + name. */
+  successorId?: string;
+  successorName?: string;
   email?: string;
   phone?: string;
 };

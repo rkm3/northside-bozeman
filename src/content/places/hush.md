@@ -6,6 +6,13 @@ address: 611 N Wallace Ave Unit B, Bozeman, MT 59715
 website: https://hushmt.com/
 phone: (406) 551-3717
 email: info@quakingaspenmt.com
+private_contacts:
+  - name: Lucy Koontz
+    email: lkoontz@quakingaspent.com
+  - name: Andrea
+    email: averdegan@aspenspringsconsulting.com
+  - name: Andrea
+    email: qadispensary@gmail.com
 lat: 45.686109
 lng: -111.02885
 ---

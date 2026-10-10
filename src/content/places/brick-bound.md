@@ -4,6 +4,9 @@ categories:
   - retail
 address: 601 E Cottonwood St, Bozeman, MT 59715
 website: https://brickbound.com
+private_contacts:
+  - name: Matt
+    email: info@brickbound.com
 lat: 45.686908
 lng: -111.027934
 ---

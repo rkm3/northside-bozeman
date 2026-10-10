@@ -4,6 +4,9 @@ categories:
   - retail
 address: 700 N Wallace Ave Ste. B, Bozeman, MT 59715
 website: https://www.miscogoods.com/
+private_contacts:
+  - name: Gina Werner
+    email: gina@miscogoods.com
 lat: 45.687125
 lng: -111.027912
 cover: ./misco-goods/cover.png

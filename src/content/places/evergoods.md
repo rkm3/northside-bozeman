@@ -4,6 +4,9 @@ categories:
   - retail
 address: 501 E Peach St Unit E, Bozeman, MT 59715
 website: https://evergoods.us
+private_contacts:
+  - name: Logan Stoneman
+    email: logan@evergoods.us
 lat: 45.686006
 lng: -111.02973
 ---
