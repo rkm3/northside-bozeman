@@ -23,6 +23,7 @@ const fullTitle =
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {!indexable && <meta name="robots" content="noindex, nofollow" />}
     <meta name="theme-color" content={brandColors.rust} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />

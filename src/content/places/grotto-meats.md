@@ -7,7 +7,7 @@ phone: (406) 548-1438
 email: grottomeats@gmail.com
 instagram_handle: grottomeats
 private_contacts:
-  - name: grottomeats@gmail.com
+  - name: Nic Bryce
     email: grottomeats@gmail.com
 lat: 45.686193
 lng: -111.029266

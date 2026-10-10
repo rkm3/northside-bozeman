@@ -10,6 +10,9 @@ import {
   type PlaceStatus,
 } from '../utils/place-status';
 
+/** Unlocked rows kept in memory for client-side filtering (never in Pagefind). */
+let unlockedRows: MemberContactRow[] | null = null;
+
 function $(id: string): HTMLElement | null {
   return document.getElementById(id);
 }
@@ -84,6 +87,14 @@ function appendContactRow(tbody: HTMLTableSectionElement, row: MemberContactRow)
   tbody.appendChild(tr);
 }
 
+function rowMatchesFilter(row: MemberContactRow, query: string): boolean {
+  if (!query) return true;
+  const hay = [row.business, row.name, row.email ?? '', row.phone ?? '', row.successorName ?? '']
+    .join(' ')
+    .toLowerCase();
+  return hay.includes(query);
+}
+
 function buildStatusSection(status: PlaceStatus, rows: MemberContactRow[]): HTMLElement {
   const section = document.createElement('section');
 
@@ -130,12 +141,22 @@ function buildStatusSection(status: PlaceStatus, rows: MemberContactRow[]): HTML
   return section;
 }
 
-function showResults(rows: MemberContactRow[]): void {
+function filterQuery(): string {
+  const input = document.getElementById('member-contacts-filter');
+  if (!(input instanceof HTMLInputElement)) return '';
+  return input.value.trim().toLowerCase();
+}
+
+function renderResults(): void {
   const form = $('member-contacts-form');
   const results = $('member-contacts-results');
   const sections = $('member-contacts-sections');
   const count = $('member-contacts-count');
   if (!(results instanceof HTMLElement) || !(sections instanceof HTMLElement)) return;
+  if (!unlockedRows) return;
+
+  const query = filterQuery();
+  const rows = unlockedRows.filter((row) => rowMatchesFilter(row, query));
 
   sections.replaceChildren();
 
@@ -155,12 +176,26 @@ function showResults(rows: MemberContactRow[]): void {
     visibleSections += 1;
   }
 
+  if (rows.length === 0) {
+    const empty = document.createElement('p');
+    empty.className = 'text-sm text-muted';
+    empty.textContent = query
+      ? 'No contacts match that filter.'
+      : 'No contacts in the directory.';
+    sections.appendChild(empty);
+  }
+
   if (count) {
-    const parts = [`${String(rows.length)} contact${rows.length === 1 ? '' : 's'}`];
-    if (visibleSections > 1) {
-      parts.push(`${String(visibleSections)} groups`);
+    const total = unlockedRows.length;
+    if (query) {
+      count.textContent = `${String(rows.length)} of ${String(total)} contact${total === 1 ? '' : 's'}`;
+    } else {
+      const parts = [`${String(total)} contact${total === 1 ? '' : 's'}`];
+      if (visibleSections > 1) {
+        parts.push(`${String(visibleSections)} groups`);
+      }
+      count.textContent = parts.join(' · ');
     }
-    count.textContent = parts.join(' · ');
   }
 
   form?.classList.add('hidden');
@@ -168,17 +203,32 @@ function showResults(rows: MemberContactRow[]): void {
   results.classList.remove('hidden');
 }
 
+function showResults(rows: MemberContactRow[]): void {
+  unlockedRows = rows;
+  const filter = document.getElementById('member-contacts-filter');
+  if (filter instanceof HTMLInputElement) {
+    filter.value = '';
+  }
+  renderResults();
+  filter?.focus();
+}
+
 function lockAgain(): void {
+  unlockedRows = null;
   const form = $('member-contacts-form');
   const results = $('member-contacts-results');
   const sections = $('member-contacts-sections');
   const password = document.getElementById('member-contacts-password');
+  const filter = document.getElementById('member-contacts-filter');
   form?.classList.remove('hidden');
   if (results instanceof HTMLElement) {
     results.hidden = true;
     results.classList.add('hidden');
   }
   sections?.replaceChildren();
+  if (filter instanceof HTMLInputElement) {
+    filter.value = '';
+  }
   if (password instanceof HTMLInputElement) {
     password.value = '';
     password.focus();
@@ -247,3 +297,10 @@ form?.addEventListener('submit', (event) => {
   void onSubmit(event);
 });
 document.getElementById('member-contacts-lock')?.addEventListener('click', lockAgain);
+
+const filterInput = document.getElementById('member-contacts-filter');
+if (filterInput instanceof HTMLInputElement) {
+  filterInput.addEventListener('input', () => {
+    if (unlockedRows) renderResults();
+  });
+}

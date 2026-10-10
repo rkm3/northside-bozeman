@@ -54,6 +54,21 @@ import PageHeader from '../../components/PageHeader.astro';
           Lock again
         </button>
       </div>
+      <div class="mb-6 max-w-md">
+        <label
+          class="block text-xs uppercase tracking-[0.16em] text-muted"
+          for="member-contacts-filter"
+        >
+          Filter
+        </label>
+        <input
+          id="member-contacts-filter"
+          type="search"
+          placeholder="Name, business, email, or phone…"
+          autocomplete="off"
+          class="mt-2 w-full border border-line bg-surface px-3 py-2 text-ink outline-none focus:border-rust"
+        />
+      </div>
       <div id="member-contacts-sections" class="space-y-10"></div>
     </div>
 
