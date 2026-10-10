@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+---
+
+<BaseLayout
+  title="Member contacts"
+  description="Password-protected contact directory for Northside Bozeman business group members."
+>
+  <PageHeader
+    kicker="Members"
+    title="Member contacts"
+    lede="Enter the shared members password to view the private contact directory."
+  />
+
+  <div class="mx-auto max-w-5xl px-4 py-8">
+    <form
+      id="member-contacts-form"
+      class="max-w-md border border-line bg-surface p-6"
+      autocomplete="current-password"
+    >
+      <label class="block text-xs uppercase tracking-[0.16em] text-muted" for="member-contacts-password">
+        Password
+      </label>
+      <input
+        id="member-contacts-password"
+        name="password"
+        type="password"
+        required
+        class="mt-2 w-full border border-line bg-paper px-3 py-2 text-ink outline-none focus:border-rust"
+      />
+      <button
+        type="submit"
+        class="mt-4 border border-rust bg-rust px-4 py-2 text-sm font-semibold text-surface hover:bg-ink hover:border-ink"
+      >
+        Unlock directory
+      </button>
+      <p
+        id="member-contacts-error"
+        class="mt-3 hidden text-sm text-rust"
+        role="alert"
+      ></p>
+    </form>
+
+    <div id="member-contacts-results" class="mt-10 hidden" hidden>
+      <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+        <p id="member-contacts-count" class="text-sm text-muted"></p>
+        <button
+          type="button"
+          id="member-contacts-lock"
+          class="text-sm font-semibold text-rust underline-offset-4 hover:underline"
+        >
+          Lock again
+        </button>
+      </div>
+      <div class="overflow-x-auto border border-line bg-surface">
+        <table class="min-w-full text-left text-sm">
+          <thead class="border-b border-line bg-paper text-xs uppercase tracking-[0.14em] text-muted">
+            <tr>
+              <th class="px-4 py-3 font-semibold" scope="col">Business</th>
+              <th class="px-4 py-3 font-semibold" scope="col">Name</th>
+              <th class="px-4 py-3 font-semibold" scope="col">Email</th>
+              <th class="px-4 py-3 font-semibold" scope="col">Phone</th>
+            </tr>
+          </thead>
+          <tbody id="member-contacts-tbody" class="divide-y divide-line"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <p class="mt-8">
+      <a class="text-sm font-semibold text-rust underline-offset-4 hover:underline" href="/member">
+        Members home
+      </a>
+    </p>
+  </div>
+</BaseLayout>
+
+<script>
+  import '../../scripts/member-contacts.ts';
+</script>

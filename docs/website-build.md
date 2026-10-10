@@ -25,8 +25,8 @@ two jobs.
 
 - **Astro**, built as a fully static site, with **Tailwind** for styling.
 - Hosted on **Cloudflare Workers** as static assets (`wrangler.jsonc`).
-- **No database and no admin UI.** All content is Markdown files in `src/content/`, checked into
-  git. Changing the site means editing a file and redeploying.
+- **No database.** All content is Markdown files in `src/content/`, checked into git. Changing the
+  site means editing a file and redeploying. Member-only tools live under `/member` (see below).
 - **Google Maps JavaScript API** draws the map. Without an API key, the site still builds, and the
   map page shows a sketch of the boundary plus the full business list.
 
@@ -38,7 +38,11 @@ two jobs.
 | Event posters, maps, photos | `public/events/<id>/` | The event's page |
 | About copy | `src/content/pages/*.md` | Home page, `/about` |
 | Neighborhood boundary | `src/data/northside-boundary.ts` | `/map` |
-| Brand tokens | `src/styles/global.css`, `src/data/brand.ts` | Everywhere; previewed at `/brand` |
+| Brand tokens | `src/styles/global.css`, `src/data/brand.ts` | Everywhere; previewed at `/member/brand` |
+| Members hub | — | `/member` (footer link) |
+| Brand guidelines page | `src/pages/member/brand.astro` | `/member/brand` (redirect from `/brand`) |
+| Add a business | `src/pages/member/add-a-business.astro` | `/member/add-a-business` |
+| Member contacts blob | `public/member/contacts.enc.json` | Decrypted at `/member/contacts` |
 
 **"Live" means as of the last deploy.** The directory updates as soon as a changed Markdown file
 is merged and the site is redeployed. Nothing updates in real time from a spreadsheet or form.
@@ -75,6 +79,10 @@ categories:
 address: 611 N Wallace Ave Unit 4, Bozeman, MT 59715
 phone: (406) 548-1438
 email: grottomeats@gmail.com
+private_contacts:
+  - name: Jane Doe
+    email: jane@example.com
+    phone: (406) 555-0100
 instagram_handle: grottomeats
 lat: 45.686193
 lng: -111.029266
@@ -86,6 +94,9 @@ A short description of the business, in plain sentences.
   sets the pin color.
 - `website`, `phone`, `email`, and social handles are optional. `instagram_handle` is a bare
   handle (no `@`), or a YAML list when a business has more than one.
+- `private_contacts`: optional YAML list of `{ name, email?, phone? }` for the **members**
+  directory. Fields prefixed `private_` never render on public place pages or the map. They stay
+  in git as plaintext for collaborators; the public site only ships an encrypted blob.
 - `lat` / `lng` place the pin. The maintainer usually looks these up from the address.
 - `cover` is an optional photo in the business's own folder, next to its listing file (for example
   `cover: ./grotto-meats/cover.webp` points to `src/content/places/grotto-meats/cover.webp`). The
@@ -94,6 +105,37 @@ A short description of the business, in plain sentences.
 
 How members ask for changes is covered in
 [Group organization & coordination](group-coordination.md#3-requesting-changes-to-your-business-entry).
+
+### Members area and encrypted contacts
+
+The footer links to `/member`, which hubs brand guidelines, add-a-business, and the contact
+directory. Old URLs `/brand` and `/add-a-business` redirect to `/member/brand` and
+`/member/add-a-business`. Logo files still live under `public/brand/` at `/brand/…`.
+
+`/member/contacts` does not embed contact data in the HTML. A build-time script encrypts every
+place’s `private_contacts` into `public/member/contacts.enc.json` (PBKDF2 + AES-GCM). Visitors
+enter the shared password in the browser to decrypt and render a table.
+
+Put the shared passphrase in `.env` (see `.env.example`):
+
+```
+MEMBER_CONTACTS_PASSWORD=your-strong-passphrase
+```
+
+After editing any `private_contacts` frontmatter, encrypt and commit the blob:
+
+```bash
+make encrypt          # or: pnpm encrypt:member-contacts
+```
+
+`make build` / `pnpm build` and `make dev` / `pnpm dev` run encrypt first when the password is
+present; if it is missing, they continue with a warning and keep the last committed blob (handy
+for CI without secrets).
+
+Commit the updated Markdown **and** `public/member/contacts.enc.json`, then deploy. Rotating the
+password means re-running encrypt and telling the group the new passphrase. Strength of the
+shared password is the whole security model for the live site (ciphertext is public; git still
+has plaintext).
 
 ---
 

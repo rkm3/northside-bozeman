@@ -1,16 +1,16 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHeader from '../components/PageHeader.astro';
-import ColorSwatch from '../components/ColorSwatch.astro';
-import Logo from '../components/Logo.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import ColorSwatch from '../../components/ColorSwatch.astro';
+import Logo from '../../components/Logo.astro';
 import {
   brandColors,
   coreSwatches,
   functionalSwatches,
   type BrandColorKey,
   type LogoVariant,
-} from '../data/brand';
-import { contrastRatio, rateContrast } from '../utils/color';
+} from '../../data/brand';
+import { contrastRatio, rateContrast } from '../../utils/color';
 
 const logos: {
   variant: LogoVariant;

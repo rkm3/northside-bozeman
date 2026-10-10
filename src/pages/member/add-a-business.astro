@@ -1,11 +1,11 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHeader from '../components/PageHeader.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
 import {
   PLACE_CATEGORIES,
   placeCategoryLabels,
   placeCategoryMarker,
-} from '../data/place-categories';
+} from '../../data/place-categories';
 
 const fields: {
   name: string;
@@ -64,6 +64,14 @@ const fields: {
     shows: 'Place page, map popup (opens mail)',
   },
   {
+    name: 'private_contacts',
+    required: false,
+    format:
+      'Member-only people behind the business. YAML list of name plus optional email and phone. Prefixed private_ so it never shows on the public site; unlock it at /member/contacts after re-encrypting the directory.',
+    example: '- name: Jane Doe\n  email: jane@example.com\n  phone: (406) 555-0100',
+    shows: 'Members contact directory only (password required)',
+  },
+  {
     name: 'instagram_handle',
     required: false,
     format: 'The handle only: no @, no link. Use a YAML list when a business has more than one.',
@@ -113,6 +121,10 @@ address: 724 N Wallace Ave Suite 3, Bozeman, MT 59715
 website: https://www.gangbusterspottery.com/
 phone: (406) 555-0123
 email: hello@gangbusterspottery.com
+private_contacts:
+  - name: Jane Doe
+    email: jane@example.com
+    phone: (406) 555-0100
 instagram_handle: gangbusterspottery
 pinterest_handle: gangbusterspottery
 lat: 45.687424
@@ -124,9 +136,11 @@ const checklist = [
   'Name, address, and at least one category',
   'Coordinates for the front door, checked on the map',
   'Website, phone, email, and social handles, if they have them',
+  'private_contacts for the members directory, if you have them',
   'A photo or square logo, with permission to use it',
   'One to three sentences about what they do',
   'The owner has seen the listing and is happy with it',
+  'If private_contacts changed: run make encrypt (needs MEMBER_CONTACTS_PASSWORD in .env) and commit the blob',
 ];
 
 const sectionNav = [

@@ -47,6 +47,18 @@ const places = defineCollection({
     website: z.url().optional(),
     phone: z.string().optional(),
     email: z.email().optional(),
+    // Member-only contacts. Never rendered on public pages; encrypted into
+    // public/member/contacts.enc.json for /member/contacts. Fields prefixed
+    // private_ must not be serialized to the client.
+    private_contacts: z
+      .array(
+        z.object({
+          name: z.string(),
+          email: z.email().optional(),
+          phone: z.string().optional(),
+        }),
+      )
+      .default([]),
     // Bare handles, without the leading @ or a URL. One handle or a list.
     instagram_handle: z
       .union([

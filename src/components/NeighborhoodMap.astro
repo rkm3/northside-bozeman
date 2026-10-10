@@ -16,6 +16,7 @@ import {
 import { boundaryRingToPoints } from '../utils/boundary-svg';
 import LinkPill from './LinkPill.astro';
 import { isLogoCover } from '../utils/place-image';
+import { omitPrivateFields } from '../utils/omit-private-fields';
 import { getWebsiteLabel } from '../utils/website-label';
 
 const places = (await getCollection('places')).sort((a, b) =>
@@ -32,23 +33,25 @@ const presentCategories = PLACE_CATEGORIES.filter((category) =>
 );
 
 const points = await Promise.all(places.map(async (place) => {
-  const primary = primaryCategory(place.data.categories);
+  // Never ship private_* frontmatter into client map JSON.
+  const publicData = omitPrivateFields(place.data);
+  const primary = primaryCategory(publicData.categories);
   const marker = placeCategoryMarker[primary];
-  const website = place.data.website;
-  const cover = place.data.cover;
+  const website = publicData.website;
+  const cover = publicData.cover;
   const isLogo = cover ? isLogoCover(cover) : false;
   // Popup is 220px square for logos, ~320px wide for photos; sized for 2x screens.
   const popupCover = cover ? await getImage({ src: cover, width: isLogo ? 440 : 640 }) : undefined;
   return {
-    name: place.data.name,
-    lat: place.data.lat,
-    lng: place.data.lng,
+    name: publicData.name,
+    lat: publicData.lat,
+    lng: publicData.lng,
     slug: place.id,
-    categories: [...place.data.categories],
-    categoryLabel: formatCategoryLabels(place.data.categories),
-    address: place.data.address,
-    phone: place.data.phone,
-    email: place.data.email,
+    categories: [...publicData.categories],
+    categoryLabel: formatCategoryLabels(publicData.categories),
+    address: publicData.address,
+    phone: publicData.phone,
+    email: publicData.email,
     fill: marker.fill,
     stroke: marker.stroke,
     coverSrc: popupCover?.src,

@@ -39,6 +39,26 @@ pnpm install && pnpm build
 
 Output goes to `dist/`.
 
+## Members contacts
+
+Private people behind each business live in place frontmatter as `private_contacts` (never shown
+on public pages). Put the shared passphrase in `.env`:
+
+```
+MEMBER_CONTACTS_PASSWORD=your-strong-passphrase
+```
+
+Then encrypt (or start dev/build — both encrypt first when the password is set):
+
+```bash
+make encrypt          # or: pnpm encrypt:member-contacts
+make dev              # encrypts, then astro dev
+make build            # encrypts, then astro build
+```
+
+Commit `public/member/contacts.enc.json` with the Markdown changes. See
+[`docs/website-build.md`](docs/website-build.md) for the full members-area notes.
+
 ## Deploy to Cloudflare Workers
 
 `wrangler.jsonc` is set up for a static assets worker:

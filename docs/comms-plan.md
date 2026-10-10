@@ -136,7 +136,7 @@ The site's public jobs (from the build doc):
 1. Live directory of Northside businesses (`/map`, place pages).
 2. Home for the two strolls (`/events`, home spotlight).
 
-Supporting pages: `/about`, `/contact`, `/brand`, `/add-a-business`.
+Supporting pages: `/about`, `/contact`, `/member` (brand, add-a-business, contacts).
 
 Do **not** put private member emails, the Google Group address (unless the group chooses to make
 it public), or the member directory Sheet on the public site.

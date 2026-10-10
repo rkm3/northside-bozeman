@@ -154,7 +154,7 @@ two weeks before each stroll.
 
 - [`DESIGN.md`](../DESIGN.md) is the source of truth: logos, colors, typography, layout, imagery,
   map styling, and voice.
-- The `/brand` page on the website is the shareable version, with live color swatches and
+- The `/member/brand` page on the website is the shareable version, with live color swatches and
   contrast checks. Send members and designers there.
 - Logo files are in `public/brand/` and are served from `/brand/…` on the site.
 

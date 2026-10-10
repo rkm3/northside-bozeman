@@ -1,7 +1,7 @@
 # Northside Bozeman — Design Guidelines
 
 The source of truth for how the Northside Bozeman Business Group looks and sounds, on this site and
-everywhere else. The live, shareable version is the [`/brand`](src/pages/brand.astro) page.
+everywhere else. The live, shareable version is the [`/member/brand`](src/pages/member/brand.astro) page.
 
 **The feel:** a historic brewery-and-rail district at the foot of the Bridgers. Warm, handmade,
 a little vintage — never slick. Think painted wall signs, grain elevators, and letterpress, not
@@ -99,7 +99,7 @@ ochre are seasoning. Never flood a whole page or section with orange or ochre.
 
 ### Accessibility rules (WCAG 2.2 AA)
 
-These are the rules that matter. The `/brand` page computes the exact ratios.
+These are the rules that matter. The `/member/brand` page computes the exact ratios.
 
 - **Body text:** `ink` or `muted` on `paper`/`surface`. Links and headings can be `rust` (6.5:1)
   or `olive` (5.1:1).
@@ -187,6 +187,6 @@ categories stay distinguishable. Don't force those into brand colors.
 ## Changing the system
 
 1. Add or change a color in **both** `src/styles/global.css` and `src/data/brand.ts`.
-2. Add it to `coreSwatches` / `functionalSwatches` so it appears on `/brand`, and add any
+2. Add it to `coreSwatches` / `functionalSwatches` so it appears on `/member/brand`, and add any
    important text pairing to the contrast table there.
 3. Don't introduce one-off hex values in components. If a color is worth using, it's worth a token.
